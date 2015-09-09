@@ -1,0 +1,33 @@
+$legacy-support-for-ie:true;
+
+@function pxToRem($px) {
+  @return $px/10rem;
+}
+
+@mixin clearfix {
+  @if $legacy-support-for-ie {
+    *zoom: 1;
+  }
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+    overflow: hidden;
+  }
+}
+
+.clear {
+  @include clearfix;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+

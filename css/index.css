@@ -468,6 +468,12 @@ input, textarea {
   user-select: text;
 }
 
-.page {
-  color: red;
+html {
+  font-size: 62.5%;
+  font-family: arial, 'Microsoft YaHei';
+}
+
+.diext header {
+  height: 7.5rem;
+  background: red;
 }

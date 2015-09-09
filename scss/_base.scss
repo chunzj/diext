@@ -459,6 +459,10 @@ ul {
   list-style-type: none;
 }
 
+li {
+  list-style: none;
+}
+
 * {
   /*cancel highlight*/
   -webkit-overflow-scrolling: touch;
