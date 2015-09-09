@@ -1,0 +1,2 @@
+# diext
+copyright limit
