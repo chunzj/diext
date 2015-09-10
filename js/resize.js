@@ -10,10 +10,15 @@
   };
 
   function adjustBase() {
-    var clientWidth = document.body.clientWidth;
+    var clientWidth = document.body.clientWidth,
+        clientHeight = window.innerHeight;
+
+    document.querySelector('caption').style.height = clientHeight + 'px';
+
     if (clientWidth > MAX_WIDTH) {
       clientWidth = MAX_WIDTH;
     }
+
     document.querySelector('html').style['font-size'] = (clientWidth / 640) * 62.5 + '%';
     resizing = null;
   }

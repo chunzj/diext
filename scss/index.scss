@@ -9,19 +9,26 @@ html {
 }
 
 .diext {
+  position: relative;
   header {
     height: 7.5rem;
     
     .left {
       margin-top: 3.1rem;
       margin-left: 2.8rem;
-      line-height: 2.6rem;
-      padding-left: 4.6rem;
+      color: #BFBFBF;
+      font-size: 1.8rem;
+    }
+
+    .logo {
       background:url("../images/icons.png") no-repeat;
       background-position: left center;
       background-size: 17.2rem auto;
-      color: #BFBFBF;
-      font-size: 1.8rem;
+      height: 2.6rem;
+      width: 3.0rem;
+      display: inline-block;
+      margin-right: 1.6rem;
+      vertical-align: -60%;
     }
 
     .right {
@@ -38,6 +45,78 @@ html {
     li:not(:last-child) {
       margin-right: 6.8rem;
       line-height: 2.6rem;
+    }
+  }
+
+  caption.p1 {
+    perspective: 1500px;
+    overflow: hidden;
+
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .card {
+      height: 90%;
+      width: 70%;
+      margin: 0 auto;
+
+      position: relative;
+    }
+
+    .frame {
+      position: absolute;
+      top: 29.8%;
+      left: 17.4%;
+
+      transform: translateZ(0px);
+      width: 67%;
+      height: 31%;
+      z-index: 444;
+    }
+
+    .john {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      transform: translateZ(40px);
+      width: 100%;
+      height: 100%;
+      z-index: 333;
+    }
+
+    .lower {
+      position: absolute;
+      top: 68.1%;
+      left: 36.6%;
+
+      transform: translateZ(20px);
+      width: 30.1%;
+      height: 6.3%;
+      z-index: 222;
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 5.4rem;
+
+    .scrollUp {
+      position: absolute;
+      top: 0;
+      left: 50%;
+
+      background: url("../images/scrollUp.jpg") no-repeat left top;
+      background-size: 8.7rem auto;
+      width: 8.7rem;
+      height: 100%;
+      margin-left: -4rem;
     }
   }
 }

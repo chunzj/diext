@@ -446,6 +446,10 @@ ul {
   list-style-type: none;
 }
 
+li {
+  list-style: none;
+}
+
 * {
   /*cancel highlight*/
   -webkit-overflow-scrolling: touch;
@@ -468,12 +472,129 @@ input, textarea {
   user-select: text;
 }
 
-html {
-  font-size: 62.5%;
+.clear {
+  *zoom: 1;
+}
+.clear:before, .clear:after {
+  content: "";
+  display: table;
+}
+.clear:after {
+  clear: both;
+  overflow: hidden;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+* {
   font-family: arial, 'Microsoft YaHei';
 }
 
+html {
+  font-size: 62.5%;
+}
+
+.diext {
+  position: relative;
+}
 .diext header {
   height: 7.5rem;
-  background: red;
+}
+.diext header .left {
+  margin-top: 3.1rem;
+  margin-left: 2.8rem;
+  color: #BFBFBF;
+  font-size: 1.8rem;
+}
+.diext header .logo {
+  background: url("../images/icons.png") no-repeat;
+  background-position: left center;
+  background-size: 17.2rem auto;
+  height: 2.6rem;
+  width: 3.0rem;
+  display: inline-block;
+  margin-right: 1.6rem;
+  vertical-align: -60%;
+}
+.diext header .right {
+  margin-top: 3.2rem;
+  margin-right: 6rem;
+}
+.diext header li {
+  display: inline;
+  color: #c0bfbf;
+  font-size: 1.4rem;
+}
+.diext header li:not(:last-child) {
+  margin-right: 6.8rem;
+  line-height: 2.6rem;
+}
+.diext caption.p1 {
+  -webkit-perspective: 1500px;
+          perspective: 1500px;
+  overflow: hidden;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.diext caption.p1 .card {
+  height: 90%;
+  width: 70%;
+  margin: 0 auto;
+  position: relative;
+}
+.diext caption.p1 .frame {
+  position: absolute;
+  top: 29.8%;
+  left: 17.4%;
+  -webkit-transform: translateZ(0px);
+          transform: translateZ(0px);
+  width: 67%;
+  height: 31%;
+  z-index: 444;
+}
+.diext caption.p1 .john {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translateZ(40px);
+          transform: translateZ(40px);
+  width: 100%;
+  height: 100%;
+  z-index: 333;
+}
+.diext caption.p1 .lower {
+  position: absolute;
+  top: 68.1%;
+  left: 36.6%;
+  -webkit-transform: translateZ(20px);
+          transform: translateZ(20px);
+  width: 30.1%;
+  height: 6.3%;
+  z-index: 222;
+}
+.diext footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  height: 5.4rem;
+}
+.diext footer .scrollUp {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  background: url("../images/scrollUp.jpg") no-repeat left top;
+  background-size: 8.7rem auto;
+  width: 8.7rem;
+  height: 100%;
+  margin-left: -4rem;
 }
