@@ -13,7 +13,10 @@
     var clientWidth = document.body.clientWidth,
         clientHeight = window.innerHeight;
 
-    document.querySelector('caption').style.height = clientHeight + 'px';
+    var captions = document.querySelectorAll('caption');
+    [].slice.call(captions, 0, captions.length).forEach(function (caption) {
+      caption.style.height = clientHeight + 'px';
+    });
 
     if (clientWidth > MAX_WIDTH) {
       clientWidth = MAX_WIDTH;
