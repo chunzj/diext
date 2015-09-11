@@ -198,7 +198,7 @@
           m('div.card', {
             onmousemove: function (evt) {
               var e = (window.innerWidth / 2 - evt.pageX) / 20,
-                n = (window.innerHeight / 2 - evt.pageY) / 20;
+                n = (window.innerHeight / 2 - evt.pageY) / 10;
 
               this.setAttribute('style', "transform:rotateY(" + e + "deg) rotateX(" + n + "deg);" +
                 "-webkit-transform: rotateY(" + e + "deg) rotateX(" + n + "deg);" +
