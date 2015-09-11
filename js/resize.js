@@ -13,9 +13,13 @@
     var clientWidth = document.body.clientWidth,
         clientHeight = window.innerHeight;
 
+    var pageContainer = document.querySelector('.diext');
+    pageContainer.style.height = clientHeight + 'px';
+
     var captions = document.querySelectorAll('caption');
-    [].slice.call(captions, 0, captions.length).forEach(function (caption) {
+    [].slice.call(captions, 0, captions.length).forEach(function (caption, idx) {
       caption.style.height = clientHeight + 'px';
+      caption.style.top = idx * clientHeight + 'px';
     });
 
     if (clientWidth > MAX_WIDTH) {

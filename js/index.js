@@ -3,31 +3,147 @@
  */
 (function () {
   var index = {
+    initialized: false,
+
+    init: function () {
+
+    },
+
     viewModel: {
       p2Images: [
         [
-          '../images/sample_1.jpg',
-          '../images/sample_2.jpg',
-          '../images/sample_3.jpg'
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
         ],
         [
-          '../images/sample_4.jpg',
-          '../images/sample_5.jpg',
-          '../images/sample_1.jpg'
+          './images/sample_4.jpg',
+          './images/sample_5.jpg',
+          ''
         ],
         [
-          '../images/sample_1.jpg',
-          '../images/sample_2.jpg',
-          '../images/sample_3.jpg'
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
         ]
       ],
-      showArrowUp: true,
-      showArrowDown: false
+      showArrowUp: false,
+      showArrowDown: false,
+      currentPage: 1,
+      totalPages:2,
+      pageScrollInterval:1,
+      browser: null,
+
+      init: function () {
+        this.changeArrow();
+        this.detectBrowser();
+      },
+
+      detectBrowser: function () {
+        var userAgent = navigator.userAgent;
+        if (userAgent.indexOf('MSIE') !== -1) {
+          var iePattern = /MSIE\s*(\d\.[^;])+/g;
+          var patternRes = iePattern.exec(userAgent);
+          if (patternRes) {
+            this.browser = {
+              name: 'IE',
+              version: patternRes[1]
+            };
+          }
+        }
+      },
+
+      changeArrow: function () {
+        if (this.currentPage === 1) {
+          this.showArrowUp = true;
+          this.showArrowDown = false;
+        } else if (this.currentPage === this.totalPages) {
+          this.showArrowUp = false;
+          this.showArrowDown = true;
+        } else {
+          this.showArrowUp = true;
+          this.showArrowDown = true;
+        }
+      },
+
+      previousPage: function () {
+        if (this.currentPage < 0) {
+          return;
+        }
+
+        this.scrollPage('up');
+      },
+
+      nextPage: function () {
+        if (this.currentPage > this.totalPages) {
+          return;
+        }
+
+        this.scrollPage('down');
+      },
+
+      scrollPage: function (direction) {
+        var clientHeight = window.innerHeight;
+
+        var captions = document.querySelectorAll('caption');
+        var currentCaption = null, nextCaption = null;
+        if (direction === 'down') {
+          currentCaption = captions[this.currentPage - 1];
+          nextCaption = captions[this.currentPage];
+
+          if (typeof $ !== 'undefined') {
+            $(currentCaption).animate({top: -clientHeight}, this.pageScrollInterval * 1000);
+            $(nextCaption).animate({top: 0}, this.pageScrollInterval * 1000);
+          } else {
+            currentCaption.style.top = -clientHeight + 'px';
+            nextCaption.style.top = '0px';
+          }
+        } else if (direction === 'up') {
+          currentCaption = captions[this.currentPage - 1];
+          nextCaption = captions[this.currentPage - 2];
+
+          if (typeof $ !== 'undefined') {
+            $(currentCaption).animate({top: clientHeight}, this.pageScrollInterval * 1000);
+            $(nextCaption).animate({top: 0}, this.pageScrollInterval * 1000);
+          } else {
+            currentCaption.style.top = clientHeight + 'px';
+            nextCaption.style.top = '0px';
+          }
+        }
+
+        if (!this.browser || (this.browser.name === 'IE' && this.browser.version > 9)) {
+          currentCaption.style.transition = 'top ' + this.pageScrollInterval + 's';
+          currentCaption.style['-moz-transition'] = 'top ' + this.pageScrollInterval + 's';
+          currentCaption.style['-webkit-transition'] = 'top ' + this.pageScrollInterval + 's';
+          currentCaption.style['-o-transition'] = 'top ' + this.pageScrollInterval + 's';
+
+          nextCaption.style.transition = 'top ' + this.pageScrollInterval + 's';
+          nextCaption.style['-moz-transition'] = 'top ' + this.pageScrollInterval + 's';
+          nextCaption.style['-webkit-transition'] = 'top ' + this.pageScrollInterval + 's';
+          nextCaption.style['-o-transition'] = 'top ' + this.pageScrollInterval + 's';
+        }
+
+        var _this = this;
+        setTimeout(function() {
+          if (direction === 'down') {
+            _this.currentPage += 1;
+          } else if (direction === 'up') {
+            _this.currentPage -= 1;
+          }
+          _this.changeArrow();
+          m.redraw();
+        }, this.pageScrollInterval * 1000);
+      }
     },
     controller: function () {
-      return index.viewModel;
+
+      var vm = index.viewModel;
+      vm.init();
+
+      return vm;
     },
     view: function (ctrl) {
+      var curLoc = location.href, isServer = (curLoc.indexOf('http') !== -1);
       return [
         m('header', [
           m('div.left', [
@@ -38,7 +154,9 @@
             m('li', 'WORKS'),
             m('li', 'ABOUT')
           ])),
-          ctrl.showArrowDown ? m('div.scrollDown', m('span.icon')) : '',
+          ctrl.showArrowDown ? m('div.scrollDown', {
+            onclick: ctrl.previousPage.bind(ctrl)
+          }, m('span.icon')) : '',
           m('div.clear')
         ]),
         m('caption.p1', [
@@ -59,14 +177,28 @@
         ]),
         m('caption.p2', ctrl.p2Images.map(function (imageRow) {
           return m('div.row', imageRow.map(function (image) {
+
+            var attrs = {}, showLoading = false;
+            if (image) {
+              if (isServer) {
+                attrs['data-url'] = image;
+              } else {
+                attrs.src = image;
+              }
+            } else {
+              showLoading = true;
+            }
+
             return m('div.img', [
-              m('span.loading', 'Loading'),
-              m('img', {'data-url': image})
+              (isServer || showLoading) ? m('span.loading', 'Loading') : '',
+              m('img', attrs)
             ]);
           }));
         })),
         m('footer', [
-          ctrl.showArrowUp ? m('div.scrollUp', m('span.icon')) : ''
+          ctrl.showArrowUp ? m('div.scrollUp', {
+            onclick: ctrl.nextPage.bind(ctrl)
+          }, m('span.icon')) : ''
         ])
       ];
     }

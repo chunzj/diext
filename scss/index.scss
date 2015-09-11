@@ -33,7 +33,9 @@ html {
 }
 
 .diext {
+  overflow: hidden;
   position: relative;
+
   header {
     height: 7.5rem;
 
@@ -129,12 +131,15 @@ html {
   }
 
   caption.p2 {
-    display: none;
+    overflow: hidden;
 
     width: 100%;
     position: absolute;
-    top: 7.5rem;
+    top: 0;
     left: 0;
+
+    padding-top: 7.5rem;
+    margin-left: -1px;
 
     .row {
       height: 43.8%;

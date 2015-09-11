@@ -501,6 +501,7 @@ html {
 }
 
 .diext {
+  overflow: hidden;
   position: relative;
 }
 .diext header {
@@ -534,6 +535,27 @@ html {
 .diext header li:not(:last-child) {
   margin-right: 6.8rem;
   line-height: 2.6rem;
+}
+.diext header .scrollDown {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  background: #1e1e1e;
+  z-index: 555;
+  width: 8.7rem;
+  height: 5.4rem;
+  margin-left: -4.35rem;
+  margin-top: -0.55rem;
+}
+.diext header .scrollDown .icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -2.2rem;
+  background: url("../images/icons.png") 22% bottom no-repeat;
+  background-size: 17.2rem auto;
+  width: 4.4rem;
+  height: 1.1rem;
 }
 .diext caption.p1 {
   -webkit-perspective: 1500px;
@@ -580,6 +602,46 @@ html {
   height: 6.3%;
   z-index: 222;
 }
+.diext caption.p2 {
+  overflow: hidden;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 7.5rem;
+  margin-left: -1px;
+}
+.diext caption.p2 .row {
+  height: 43.8%;
+  width: 100%;
+}
+.diext caption.p2 .img {
+  display: inline-block;
+  width: 33%;
+  height: 100%;
+  background: #000;
+  position: relative;
+}
+.diext caption.p2 .img .loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -1.3rem;
+  margin-left: -1.4rem;
+  height: 2.6rem;
+  background: url("../images/icons.png") 55% top no-repeat;
+  background-size: 17.2rem auto;
+  font-size: 1.2rem;
+  color: #7f7e7e;
+  padding-top: 4rem;
+}
+.diext caption.p2 .img:last-child {
+  width: 34%;
+}
+.diext caption.p2 img {
+  width: 100%;
+  height: 100%;
+}
 .diext footer {
   position: fixed;
   bottom: 0;
@@ -592,9 +654,19 @@ html {
   position: absolute;
   top: 0;
   left: 50%;
-  background: url("../images/scrollUp.jpg") no-repeat left top;
-  background-size: 8.7rem auto;
+  background: #1e1e1e;
+  z-index: 555;
   width: 8.7rem;
-  height: 100%;
-  margin-left: -4rem;
+  height: 5.4rem;
+  margin-left: -4.35rem;
+}
+.diext footer .scrollUp .icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -2.2rem;
+  background: url("../images/icons.png") 22% top no-repeat;
+  background-size: 17.2rem auto;
+  width: 4.4rem;
+  height: 1.1rem;
 }
