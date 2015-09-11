@@ -5,11 +5,14 @@
   var index = {
     initialized: false,
 
-    init: function () {
-
-    },
-
     viewModel: {
+      imageLoaded: {
+        './images/sample_1.jpg': false,
+        './images/sample_2.jpg': false,
+        './images/sample_3.jpg': false,
+        './images/sample_4.jpg': false,
+        './images/sample_5.jpg': false
+      },
       p2Images: [
         [
           './images/sample_1.jpg',
@@ -74,12 +77,15 @@
         this.scrollPage('up');
       },
 
-      nextPage: function () {
+      nextPage: function (isServer) {
         if (this.currentPage > this.totalPages) {
           return;
         }
 
         this.scrollPage('down');
+        if (isServer) {
+          this.lazyLoadImages();
+        }
       },
 
       scrollPage: function (direction) {
@@ -133,6 +139,35 @@
           _this.changeArrow();
           m.redraw();
         }, this.pageScrollInterval * 1000);
+      },
+
+      lazyLoadImages: function () {
+        var lazyLoadImgs = document.querySelectorAll('img[data-url]'), _this = this;
+        if (lazyLoadImgs.length > 0) {
+          var img = null, loadingImgs = [];
+          [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom) {
+
+            var imgUrl = imgDom.getAttribute('data-url'),
+                loaded = _this.imageLoaded[imgUrl];
+
+            if (typeof loaded === 'undefined' || loaded || loadingImgs.indexOf(imgUrl, 0) !== -1) {
+              return;
+            }
+
+            img = new Image();
+            img.src = imgUrl;
+            img.onload = function(){
+              _this.imageLoaded[imgUrl] = true;
+              setTimeout(m.redraw, _this.pageScrollInterval * 1000);
+            };
+
+            img.onerror = function(){
+              console.log('Image url(' + imgUrl + ') load error!');
+            };
+
+            loadingImgs.push(imgUrl);
+          });
+        }
       }
     },
     controller: function () {
@@ -180,7 +215,8 @@
 
             var attrs = {}, showLoading = false;
             if (image) {
-              if (isServer) {
+              if (isServer && !ctrl.imageLoaded[image]) {
+                showLoading = true;
                 attrs['data-url'] = image;
               } else {
                 attrs.src = image;
@@ -190,14 +226,14 @@
             }
 
             return m('div.img', [
-              (isServer || showLoading) ? m('span.loading', 'Loading') : '',
+              showLoading ? m('span.loading', 'Loading') : '',
               m('img', attrs)
             ]);
           }));
         })),
         m('footer', [
           ctrl.showArrowUp ? m('div.scrollUp', {
-            onclick: ctrl.nextPage.bind(ctrl)
+            onclick: ctrl.nextPage.bind(ctrl, isServer)
           }, m('span.icon')) : ''
         ])
       ];
