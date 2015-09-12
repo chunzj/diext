@@ -619,14 +619,12 @@ html {
   margin-left: -1px;
 }
 .diext caption.p2 .row {
-  height: 43.8rem;
-  width: 192rem;
+  background-color: #000;
 }
 .diext caption.p2 .img {
   display: inline-block;
-  width: 63.3rem;
-  height: 100%;
-  background: #000;
+  width: 33.3333%;
+  height: auto;
   position: relative;
 }
 .diext caption.p2 .img .loading {
@@ -641,9 +639,6 @@ html {
   font-size: 1.2rem;
   color: #7f7e7e;
   padding-top: 4rem;
-}
-.diext caption.p2 .img:last-child {
-  width: 34%;
 }
 .diext caption.p2 img {
   width: 100%;

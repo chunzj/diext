@@ -221,16 +221,16 @@
             var cardDom = this.querySelector('.card');
 
             var e = -((window.innerWidth / 2 - evt.pageX) / 20),
-              n = -((window.innerHeight / 2 - evt.pageY) / 10);
+              n = ((window.innerHeight / 2 - evt.pageY) / 10);
 
             cardDom.setAttribute('style', "transform:rotateY(" + e + "deg) rotateX(" + n + "deg);" +
               "-webkit-transform: rotateY(" + e + "deg) rotateX(" + n + "deg);" +
               "-moz-transform: rotateY(" + e + "deg) rotateX(" + n + "deg)");
           }
         }, m('div.card', [
-          m('img.frame', {src: './images/p1.png'}),
-          m('img.john', {src: './images/p2.png'}),
-          m('img.lower', {src: './images/p3.png'})
+          m('img.frame', {src: './images/bigword.svg'}),
+          m('img.john', {src: './images/lines.svg'}),
+          m('img.lower', {src: './images/smallword.svg'})
         ]))),
         m('caption.p2', ctrl.p2Images.map(function (imageRow) {
           return m('div.row', imageRow.map(function (image) {
