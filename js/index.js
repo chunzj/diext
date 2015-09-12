@@ -41,6 +41,8 @@
       totalPages: 2,
       pageScrollInterval: 1,
       browser: null,
+      scrollDone: true,
+      worksLinkActive: false,
 
       init: function () {
         this.changeArrow();
@@ -58,6 +60,7 @@
             } else {
               _this.nextPage();
             }
+            m.redraw();
           }
         });
       },
@@ -91,6 +94,7 @@
 
       previousPage: function () {
         if (this.currentPage <= 1) {
+          this.worksLinkActive = false;
           return;
         }
 
@@ -109,6 +113,15 @@
       },
 
       scrollPage: function (direction) {
+
+        if (!this.scrollDone) {
+          return;
+        }
+
+        this.showArrowUp = false;
+        this.showArrowDown = false;
+        this.scrollDone = false;
+
         var clientHeight = window.innerHeight;
 
         var captions = document.querySelectorAll('caption');
@@ -149,16 +162,22 @@
           nextCaption.style['-o-transition'] = 'top ' + this.pageScrollInterval + 's';
         }
 
-        //chane page
-        if (direction === 'down') {
-          this.currentPage += 1;
-        } else if (direction === 'up') {
-          this.currentPage -= 1;
-        }
-
         var _this = this;
         setTimeout(function () {
+          //chane page
+          if (direction === 'down') {
+            _this.currentPage += 1;
+          } else if (direction === 'up') {
+            _this.currentPage -= 1;
+          }
+
+          if (_this.currentPage === 1) {
+            _this.worksLinkActive = false;
+          }
+
           _this.changeArrow();
+          _this.scrollDone = true;
+
           m.redraw();
         }, this.pageScrollInterval * 1000);
       },
@@ -208,8 +227,13 @@
             m('span.txt', 'DIEXT LAB')
           ]),
           m('div.right', m('nav', [
-            m('li', 'WORKS'),
-            m('li', 'ABOUT')
+            m('a' + (ctrl.worksLinkActive && ctrl.scrollDone ? '.active' : ''), {
+              onclick: function () {
+                ctrl.worksLinkActive = true;
+                ctrl.nextPage.call(ctrl, isServer);
+              }
+            }, 'WORKS'),
+            m('a', 'ABOUT')
           ])),
           ctrl.showArrowDown ? m('div.scrollDown', {
             onclick: ctrl.previousPage.bind(ctrl)
