@@ -1,5 +1,5 @@
 /**
- * Created by huangliqin on 2015/9/9.
+ * Created by chunzj on 2015/9/9.
  */
 (function () {
   var index = {
@@ -28,18 +28,38 @@
           './images/sample_1.jpg',
           './images/sample_2.jpg',
           './images/sample_3.jpg'
+        ],
+        [
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
         ]
       ],
       showArrowUp: false,
       showArrowDown: false,
       currentPage: 1,
-      totalPages:2,
-      pageScrollInterval:1,
+      totalPages: 2,
+      pageScrollInterval: 1,
       browser: null,
 
       init: function () {
         this.changeArrow();
         this.detectBrowser();
+        this.bindScrollEvent();
+      },
+
+      bindScrollEvent: function () {
+        var _this = this;
+        tool.registerMouseScrollEvent(function (evt, direction) {
+          var curCaptionScrollTop = document.querySelectorAll('caption')[_this.currentPage - 1].scrollTop;
+          if (curCaptionScrollTop === 0) {
+            if (direction > 0) {
+              _this.previousPage();
+            } else {
+              _this.nextPage();
+            }
+          }
+        });
       },
 
       detectBrowser: function () {
@@ -70,7 +90,7 @@
       },
 
       previousPage: function () {
-        if (this.currentPage < 0) {
+        if (this.currentPage <= 1) {
           return;
         }
 
@@ -78,7 +98,7 @@
       },
 
       nextPage: function (isServer) {
-        if (this.currentPage > this.totalPages) {
+        if (this.currentPage >= this.totalPages) {
           return;
         }
 
@@ -129,13 +149,15 @@
           nextCaption.style['-o-transition'] = 'top ' + this.pageScrollInterval + 's';
         }
 
+        //chane page
+        if (direction === 'down') {
+          this.currentPage += 1;
+        } else if (direction === 'up') {
+          this.currentPage -= 1;
+        }
+
         var _this = this;
-        setTimeout(function() {
-          if (direction === 'down') {
-            _this.currentPage += 1;
-          } else if (direction === 'up') {
-            _this.currentPage -= 1;
-          }
+        setTimeout(function () {
           _this.changeArrow();
           m.redraw();
         }, this.pageScrollInterval * 1000);
@@ -148,7 +170,7 @@
           [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom) {
 
             var imgUrl = imgDom.getAttribute('data-url'),
-                loaded = _this.imageLoaded[imgUrl];
+              loaded = _this.imageLoaded[imgUrl];
 
             if (typeof loaded === 'undefined' || loaded || loadingImgs.indexOf(imgUrl, 0) !== -1) {
               return;
@@ -156,12 +178,12 @@
 
             img = new Image();
             img.src = imgUrl;
-            img.onload = function(){
+            img.onload = function () {
               _this.imageLoaded[imgUrl] = true;
               setTimeout(m.redraw, _this.pageScrollInterval * 1000);
             };
 
-            img.onerror = function(){
+            img.onerror = function () {
               console.log('Image url(' + imgUrl + ') load error!');
             };
 
@@ -194,22 +216,22 @@
           }, m('span.icon')) : '',
           m('div.clear')
         ]),
-        m('caption.p1', [
-          m('div.card', {
-            onmousemove: function (evt) {
-              var e = (window.innerWidth / 2 - evt.pageX) / 20,
-                n = (window.innerHeight / 2 - evt.pageY) / 10;
+        m('caption.p1', m('div.main', {
+          onmousemove: function (evt) {
+            var cardDom = this.querySelector('.card');
 
-              this.setAttribute('style', "transform:rotateY(" + e + "deg) rotateX(" + n + "deg);" +
-                "-webkit-transform: rotateY(" + e + "deg) rotateX(" + n + "deg);" +
-                "-moz-transform: rotateY(" + e + "deg) rotateX(" + n + "deg)");
-            }
-          }, [
-            m('img.frame', {src: './images/p1.png'}),
-            m('img.john', {src: './images/p2.png'}),
-            m('img.lower', {src: './images/p3.png'})
-          ])
-        ]),
+            var e = -((window.innerWidth / 2 - evt.pageX) / 20),
+              n = -((window.innerHeight / 2 - evt.pageY) / 10);
+
+            cardDom.setAttribute('style', "transform:rotateY(" + e + "deg) rotateX(" + n + "deg);" +
+              "-webkit-transform: rotateY(" + e + "deg) rotateX(" + n + "deg);" +
+              "-moz-transform: rotateY(" + e + "deg) rotateX(" + n + "deg)");
+          }
+        }, m('div.card', [
+          m('img.frame', {src: './images/p1.png'}),
+          m('img.john', {src: './images/p2.png'}),
+          m('img.lower', {src: './images/p3.png'})
+        ]))),
         m('caption.p2', ctrl.p2Images.map(function (imageRow) {
           return m('div.row', imageRow.map(function (image) {
 

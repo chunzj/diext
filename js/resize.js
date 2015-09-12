@@ -1,5 +1,5 @@
 (function () {
-  var MAX_WIDTH = 1080;
+  var MAX_WIDTH = 1920;
   var resizing = null;
 
   window.onresize = function() {
@@ -11,7 +11,7 @@
 
   function adjustBase() {
     var clientWidth = document.body.clientWidth,
-        clientHeight = window.innerHeight;
+      clientHeight = window.innerHeight;
 
     var pageContainer = document.querySelector('.diext');
     pageContainer.style.height = clientHeight + 'px';
@@ -26,11 +26,11 @@
       clientWidth = MAX_WIDTH;
     }
 
-    document.querySelector('html').style['font-size'] = (clientWidth / 640) * 62.5 + '%';
+    document.querySelector('html').style['font-size'] = (clientWidth / 1920) * 62.5 + '%';
     resizing = null;
   }
 
   window.onload = function () {
-	adjustBase();  
+    adjustBase();
   }
 })();
