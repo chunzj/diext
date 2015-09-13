@@ -11,7 +11,17 @@
         './images/sample_2.jpg': false,
         './images/sample_3.jpg': false,
         './images/sample_4.jpg': false,
-        './images/sample_5.jpg': false
+        './images/sample_5.jpg': false,
+        './images/1080banyan_01_01.jpg': false,
+        './images/1080banyan_01_02.jpg': false,
+        './images/1080banyan_01_03.jpg': false,
+        './images/1080banyan_01_04.jpg': false,
+        './images/1080banyan_01_05.jpg': false,
+        './images/1080banyan_01_06.jpg': false,
+        './images/1080banyan_01_07.jpg': false,
+        './images/1080banyan_02_01.jpg': false,
+        './images/1080banyan_02_02.jpg': false,
+        './images/1080banyan_02_03.jpg': false,
       },
       p2Images: [
         [
@@ -35,6 +45,10 @@
           './images/sample_3.jpg'
         ]
       ],
+
+      p3Images: [],
+      p3ImagesNum: [7, 3],
+
       showArrowUp: false,
       showArrowDown: false,
       currentPage: 1,
@@ -43,11 +57,32 @@
       browser: null,
       scrollDone: true,
       worksLinkActive: false,
+      seeImgDetail: false,
+      showDeleteIcon: false,
+      showLinkIcon: false,
+      currentImg: 0,
 
       init: function () {
+        this.initImgResource();
         this.changeArrow();
         this.detectBrowser();
         this.bindScrollEvent();
+      },
+
+      initImgResource: function () {
+        var row = 0, _this = this;
+        this.p2Images.forEach(function (subImages, idx) {
+          row = idx * subImages.length;
+          subImages.forEach(function (img, index) {
+            var imgNum = row + index;
+            _this.p3Images[imgNum] = [];
+            for (var i = 1; i <= _this.p3ImagesNum[imgNum]; i++) {
+              _this.p3Images[imgNum].push('./images/1080banyan_' +
+                (imgNum < 10 ? '0' + (imgNum + 1) : (imgNum + 1)) + '_' + (i < 10 ? '0' + i : i) + '.jpg');
+            }
+          });
+          row++;
+        });
       },
 
       bindScrollEvent: function () {
@@ -58,7 +93,7 @@
             if (direction > 0) {
               _this.previousPage();
             } else {
-              _this.nextPage();
+              _this.nextPage(_this.isServer());
             }
             m.redraw();
           }
@@ -92,6 +127,15 @@
         }
       },
 
+      deleteImageDetail: function () {
+        this.preImgControl();
+        this.paramControl(false);
+      },
+
+      linkToOther: function () {
+
+      },
+
       previousPage: function () {
         if (this.currentPage <= 1) {
           this.worksLinkActive = false;
@@ -108,13 +152,13 @@
 
         this.scrollPage('down');
         if (isServer) {
-          this.lazyLoadImages();
+          this.lazyLoadImages('caption.p2', true);
         }
       },
 
       scrollPage: function (direction) {
 
-        if (!this.scrollDone) {
+        if (!this.scrollDone || this.seeImgDetail) {
           return;
         }
 
@@ -164,7 +208,7 @@
 
         var _this = this;
         setTimeout(function () {
-          //chane page
+          //change page
           if (direction === 'down') {
             _this.currentPage += 1;
           } else if (direction === 'up') {
@@ -182,8 +226,8 @@
         }, this.pageScrollInterval * 1000);
       },
 
-      lazyLoadImages: function () {
-        var lazyLoadImgs = document.querySelectorAll('img[data-url]'), _this = this;
+      lazyLoadImages: function (container, redraw) {
+        var lazyLoadImgs = document.querySelectorAll(container + ' img[data-url]'), _this = this, deferrs = [];
         if (lazyLoadImgs.length > 0) {
           var img = null, loadingImgs = [];
           [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom) {
@@ -195,20 +239,69 @@
               return;
             }
 
-            img = new Image();
-            img.src = imgUrl;
-            img.onload = function () {
-              _this.imageLoaded[imgUrl] = true;
-              setTimeout(m.redraw, _this.pageScrollInterval * 1000);
-            };
-
-            img.onerror = function () {
-              console.log('Image url(' + imgUrl + ') load error!');
-            };
+            deferrs.push(_this.loadImg(imgUrl, redraw));
 
             loadingImgs.push(imgUrl);
           });
         }
+
+        return deferrs;
+      },
+      loadImg: function (imgUrl, redraw) {
+        var deferred = m.deferred(), img = new Image(), _this = this;
+        img.src = imgUrl;
+        img.onload = function () {
+
+          _this.imageLoaded[imgUrl] = true;
+          if (redraw) {
+            setTimeout(m.redraw, _this.pageScrollInterval * 1000);
+          }
+
+          deferred.resolve();
+        };
+
+        img.onerror = function () {
+          console.log('Image url(' + imgUrl + ') load error!');
+          deferred.reject();
+        };
+
+        return deferred.promise;
+      },
+      preImgControl: function (imgIdx) {
+        this.currentImg = imgIdx || 0;
+        m.redraw(true);
+      },
+      popImageDetail: function (imgIdx, isServer, isValidImg) {
+        if (!isValidImg) {
+          return;
+        }
+
+        this.preImgControl(imgIdx);
+
+        var _this = this;
+        if (isServer) {
+          m.sync(this.lazyLoadImages('.img-detail')).then(function () {
+            _this.paramControl(true);
+            m.redraw();
+          });
+        } else {
+          this.paramControl(true);
+        }
+      },
+      paramControl: function (showDetail) {
+        var imgDetail = document.querySelector('.diext .img-detail');
+        imgDetail.style.display = showDetail ? 'block' : 'none';
+
+        this.showArrowDown = !showDetail;
+        this.showArrowUp = !showDetail;
+        this.showDeleteIcon = showDetail;
+        this.showLinkIcon = showDetail;
+
+        this.seeImgDetail = showDetail;
+      },
+      isServer: function () {
+        var curLoc = location.href;
+        return (curLoc.indexOf('http') !== -1);
       }
     },
     controller: function () {
@@ -218,10 +311,30 @@
 
       return vm;
     },
+
+    imageView: function (ctrl, image, isServer, imgAttrs) {
+      var attrs = {}, showLoading = false;
+      if (image) {
+        if (isServer && !ctrl.imageLoaded[image]) {
+          showLoading = true;
+          attrs['data-url'] = image;
+        } else {
+          attrs.src = image;
+        }
+      } else {
+        showLoading = true;
+      }
+
+      return m('div.img', imgAttrs, [
+        showLoading ? m('span.loading', 'Loading') : '',
+        m('img', attrs)
+      ]);
+    },
+
     view: function (ctrl) {
-      var curLoc = location.href, isServer = (curLoc.indexOf('http') !== -1);
+      var isServer = ctrl.isServer();
       return [
-        m('header', [
+        m('header' + (ctrl.seeImgDetail ? '.white-bg' : ''), [
           m('div.left', [
             m('span.logo'),
             m('span.txt', 'DIEXT LAB')
@@ -237,6 +350,12 @@
           ])),
           ctrl.showArrowDown ? m('div.scrollDown', {
             onclick: ctrl.previousPage.bind(ctrl)
+          }, m('span.icon')) : '',
+          ctrl.showDeleteIcon ? m('div.deleteIcon', {
+            onclick: ctrl.deleteImageDetail.bind(ctrl)
+          }, m('span.icon')) : '',
+          ctrl.showLinkIcon ? m('div.linkIcon', {
+            onclick: ctrl.linkToOther.bind(ctrl)
           }, m('span.icon')) : '',
           m('div.clear')
         ]),
@@ -256,27 +375,19 @@
           m('img.john', {src: './images/lines.svg'}),
           m('img.lower', {src: './images/smallword.svg'})
         ]))),
-        m('caption.p2', ctrl.p2Images.map(function (imageRow) {
-          return m('div.row', imageRow.map(function (image) {
-
-            var attrs = {}, showLoading = false;
-            if (image) {
-              if (isServer && !ctrl.imageLoaded[image]) {
-                showLoading = true;
-                attrs['data-url'] = image;
-              } else {
-                attrs.src = image;
-              }
-            } else {
-              showLoading = true;
-            }
-
-            return m('div.img', [
-              showLoading ? m('span.loading', 'Loading') : '',
-              m('img', attrs)
-            ]);
+        m('caption.p2', ctrl.p2Images.map(function (imageRow, outerIndex) {
+          return m('div.row', imageRow.map(function (image, idx) {
+            return index.imageView(ctrl, image, isServer, {
+              onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, isServer, !!image)
+            });
           }));
         })),
+        m('div.img-detail', [
+          m('div.top'),
+          m('div.main', ctrl.p3Images[ctrl.currentImg].map(function(image) {
+            return index.imageView(ctrl, image, isServer);
+          }))
+        ]),
         m('footer', [
           ctrl.showArrowUp ? m('div.scrollUp', {
             onclick: ctrl.nextPage.bind(ctrl, isServer)

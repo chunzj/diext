@@ -492,6 +492,10 @@ input, textarea {
   float: right;
 }
 
+.white-bg {
+  background-color: #fff;
+}
+
 * {
   font-family: arial, 'Microsoft YaHei';
 }
@@ -507,8 +511,8 @@ html {
 .diext header {
   z-index: 777;
   height: 7.5rem;
-  width: 100%;
   position: fixed;
+  width: 99.09%;
   top: 0;
   left: 0;
 }
@@ -536,27 +540,30 @@ html {
   display: inline-block;
   color: #c0bfbf;
   font-size: 1.4rem;
+  cursor: pointer;
 }
 .diext header a:not(:last-child) {
   margin-right: 6.8rem;
   line-height: 2.6rem;
 }
 .diext header .scrollDown {
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 50%;
   background: #1e1e1e;
-  z-index: 555;
   width: 8.7rem;
   height: 5.4rem;
   margin-left: -4.35rem;
   margin-top: -0.55rem;
 }
 .diext header .scrollDown .icon {
+  display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
   margin-left: -2.2rem;
+  margin-top: -0.55rem;
   background: url("../images/icons.png") 22% bottom no-repeat;
   background-size: 17.2rem auto;
   width: 4.4rem;
@@ -564,6 +571,48 @@ html {
 }
 .diext header .active {
   color: #000;
+}
+.diext header .deleteIcon {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 21.875%;
+  background: #ff4646;
+  width: 7.6rem;
+  height: 7.5rem;
+}
+.diext header .deleteIcon .icon {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  background: url("../images/icons.png") 78% bottom no-repeat;
+  background-size: 17.2rem auto;
+  width: 2rem;
+  height: 2rem;
+}
+.diext header .linkIcon {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 25.8%;
+  background: #fff;
+  width: 9.4rem;
+  height: 7.5rem;
+}
+.diext header .linkIcon .icon {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -1.15rem;
+  margin-top: -1.2rem;
+  background: url("../images/icons.png") right bottom no-repeat;
+  background-size: 17.2rem auto;
+  width: 2.3rem;
+  height: 2.4rem;
 }
 .diext caption.p1 {
   -webkit-perspective: 1500px;
@@ -652,6 +701,44 @@ html {
   width: 100%;
   height: 100%;
 }
+.diext .img-detail {
+  display: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #1e1e1e;
+}
+.diext .img-detail .main {
+  width: 56.25%;
+  height: auto;
+  margin: 0 auto;
+}
+.diext .img-detail .img {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+.diext .img-detail .img .loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -1.3rem;
+  margin-left: -1.4rem;
+  height: 2.6rem;
+  background: url("../images/icons.png") 55% top no-repeat;
+  background-size: 17.2rem auto;
+  font-size: 1.2rem;
+  color: #7f7e7e;
+  padding-top: 4rem;
+}
+.diext .img-detail img {
+  width: 100%;
+  height: 100%;
+}
 .diext footer {
   position: fixed;
   bottom: 0;
@@ -661,20 +748,22 @@ html {
   height: 5.4rem;
 }
 .diext footer .scrollUp {
+  cursor: pointer;
   position: absolute;
   top: 0;
   left: 50%;
   background: #1e1e1e;
-  z-index: 555;
   width: 8.7rem;
   height: 5.4rem;
   margin-left: -4.35rem;
 }
 .diext footer .scrollUp .icon {
+  display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
   margin-left: -2.2rem;
+  margin-top: -0.55rem;
   background: url("../images/icons.png") 22% top no-repeat;
   background-size: 17.2rem auto;
   width: 4.4rem;

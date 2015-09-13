@@ -11,15 +11,17 @@
 
   function adjustBase() {
     var clientWidth = document.body.clientWidth,
-      clientHeight = window.innerHeight;
+      innerHeight = window.innerHeight;
 
     var pageContainer = document.querySelector('.diext');
-    pageContainer.style.height = clientHeight + 'px';
+    pageContainer.style.height = innerHeight + 'px';
 
-    var captions = document.querySelectorAll('caption');
+    var captions = document.querySelectorAll('caption'), imgDetail = document.querySelector('.img-detail');
     [].slice.call(captions, 0, captions.length).forEach(function (caption, idx) {
-      caption.style.height = clientHeight + 'px';
-      caption.style.top = idx * clientHeight + 'px';
+      caption.style.height = innerHeight + 'px';
+      caption.style.top = idx * innerHeight + 'px';
+
+      imgDetail.style.height = innerHeight + 'px';
     });
 
     if (clientWidth > MAX_WIDTH) {

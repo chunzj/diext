@@ -8,27 +8,65 @@ html {
   font-size: 62.5%;
 }
 
-@mixin arrowStyle($bgLeft, $bgTop) {
+@mixin iconContainer ($left, $bg, $width, $height) {
+  cursor: pointer;
+
   position: absolute;
   top: 0;
+  left: $left;
+  background: $bg;
+
+  width: $width;
+  height: $height;
+}
+
+@mixin spriteIcon ($bgLeft, $bgTop, $width:4.4rem, $height:1.1rem) {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
   left: 50%;
-  background: #1e1e1e;
-  z-index: 555;
+  margin-left: -$width / 2;
+  margin-top: -$height / 2;
+  background: url('../images/icons.png') $bgLeft $bgTop no-repeat;
+  background-size: 17.2rem auto;
+  width: $width;
+  height: $height;
+}
 
-  width: 8.7rem;
-  height: 5.4rem;
+@mixin arrowStyle($bgLeft, $bgTop) {
+  @include iconContainer(50%, #1e1e1e, 8.7rem, 5.4rem);
   margin-left: -4.35rem;
-
   & .icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -2.2rem;
+    @include spriteIcon($bgLeft, $bgTop);
+  }
+}
 
-    background: url('../images/icons.png') $bgLeft $bgTop no-repeat;
-    background-size: 17.2rem auto;
-    width: 4.4rem;
-    height: 1.1rem;
+@mixin imgLazy($width) {
+  .img {
+    display: inline-block;
+    width: $width;
+    height: auto;
+    position: relative;
+
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -1.3rem;
+      margin-left: -1.4rem;
+
+      height: 2.6rem;
+      background: url('../images/icons.png') 55% top no-repeat;
+      background-size: 17.2rem auto;
+      font-size: 1.2rem;
+      color: #7f7e7e;
+      padding-top: 4rem;
+    }
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -39,8 +77,8 @@ html {
   header {
     z-index: 777;
     height: 7.5rem;
-    width: 100%;
     position: fixed;
+    width: 99.09%;
     top: 0;
     left: 0;
 
@@ -71,6 +109,7 @@ html {
       display: inline-block;
       color: #c0bfbf;
       font-size: 1.4rem;
+      cursor: pointer;
     }
 
     a:not(:last-child) {
@@ -85,6 +124,20 @@ html {
 
     .active {
       color: #000;
+    }
+
+    .deleteIcon {
+      @include iconContainer(21.875%, #ff4646, 7.6rem, 7.5rem);
+      & .icon {
+        @include spriteIcon(78%, bottom, 2rem, 2rem);
+      }
+    }
+
+    .linkIcon {
+      @include iconContainer(25.8%, #fff, 9.4rem, 7.5rem);
+      & .icon {
+        @include spriteIcon(right, bottom, 2.3rem, 2.4rem);
+      }
     }
   }
 
@@ -158,32 +211,26 @@ html {
       background-color: #000;
     }
 
-    .img {
-      display: inline-block;
-      width: 33.3333%;
+    @include imgLazy(33.3333%);
+  }
+
+  .img-detail {
+    display: none;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #1e1e1e;
+
+    .main {
+      width: 56.25%;
       height: auto;
-      position: relative;
-
-      .loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-top: -1.3rem;
-        margin-left: -1.4rem;
-
-        height: 2.6rem;
-        background: url('../images/icons.png') 55% top no-repeat;
-        background-size: 17.2rem auto;
-        font-size: 1.2rem;
-        color: #7f7e7e;
-        padding-top: 4rem;
-      }
+      margin: 0 auto;
     }
 
-    img {
-      width: 100%;
-      height: 100%;
-    }
+    @include imgLazy(100%);
   }
 
   footer {
