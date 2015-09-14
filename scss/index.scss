@@ -78,13 +78,13 @@ html {
     z-index: 777;
     height: 7.5rem;
     position: fixed;
-    width: 99.09%;
+    width: 99.34%;
     top: 0;
     left: 0;
 
     .left {
       margin-top: 3.1rem;
-      margin-left: 2.8rem;
+      margin-left: 1.46%;
       color: #BFBFBF;
       font-size: 1.8rem;
     }
@@ -134,7 +134,8 @@ html {
     }
 
     .linkIcon {
-      @include iconContainer(25.8%, #fff, 9.4rem, 7.5rem);
+      @include iconContainer(21.875%, #fff, 9.4rem, 7.5rem);
+      margin-left: 7.6rem;
       & .icon {
         @include spriteIcon(right, bottom, 2.3rem, 2.4rem);
       }
@@ -149,6 +150,7 @@ html {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 756;
 
     .main {
       height: 90%;
@@ -224,6 +226,7 @@ html {
     top: 0;
     left: 0;
     background-color: #1e1e1e;
+    z-index: 744;
 
     .main {
       width: 56.25%;
@@ -241,6 +244,7 @@ html {
     width: 100%;
     text-align: center;
     height: 5.4rem;
+    z-index: 800;
 
     .scrollUp {
       @include arrowStyle(22%, top);

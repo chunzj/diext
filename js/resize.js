@@ -1,5 +1,5 @@
 (function () {
-  var MAX_WIDTH = 1920, MAX_HEIGHT= 1000;
+  var MAX_WIDTH = 1920;
   var resizing = null;
 
   window.onresize = function() {

@@ -81,9 +81,16 @@
             _this.currentPage = 1;
             _this.worksLinkActive = false;
             _this.changeArrow();
+            _this.ajustHeaderWidth();
             m.redraw();
           }, 100);
         });
+      },
+
+      ajustHeaderWidth: function () {
+        var header = document.querySelector('.diext header');
+            clientWidth = document.body.clientWidth;
+        header.style.width = ((1 - 16 / clientWidth).toFixed(4) * 100) + '%';
       },
 
       initImgResource: function () {
@@ -306,7 +313,7 @@
         }
       },
       paramControl: function (showDetail) {
-        var imgDetail = document.querySelector('.diext .img-detail');
+        var imgDetail = document.querySelector('.diext .img-detail'), _this = this;
 
         if (showDetail) {
           imgDetail.style.zIndex = '766';
@@ -320,12 +327,13 @@
 
           setTimeout(function () {
               imgDetail.scrollTop = 0;
-          }, this.pageScrollInterval);
+              _this.ajustHeaderWidth();
+          }, this.pageScrollInterval * 10);
 
         } else {
 
-          imgDetail.style.zIndex = 'inherit';
           imgDetail.style.opacity = 0;
+          imgDetail.style.zIndex = '744';
         }
 
 
@@ -335,6 +343,9 @@
         this.showLinkIcon = showDetail;
 
         this.seeImgDetail = showDetail;
+        if (!showDetail) {
+          this.changeArrow();
+        }
       },
       isServer: function () {
         var curLoc = location.href;
