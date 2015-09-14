@@ -24,26 +24,26 @@
         './images/1080banyan_02_03.jpg': false,
       },
       p2Images: [
-			[
-			 './images/sample_1.jpg',
-			 './images/sample_2.jpg',
-			 './images/sample_3.jpg'
-			],
-			[
-        './images/sample_4.jpg',
-        './images/sample_5.jpg',
-        ''
-			],
-			[
-			 './images/sample_1.jpg',
-			 './images/sample_2.jpg',
-			 './images/sample_3.jpg'
-			],
-			[
-			 './images/sample_1.jpg',
-			 './images/sample_2.jpg',
-			 './images/sample_3.jpg'
-			]
+        [
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
+        ],
+        [
+          './images/sample_4.jpg',
+          './images/sample_5.jpg',
+          ''
+        ],
+        [
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
+        ],
+        [
+          './images/sample_1.jpg',
+          './images/sample_2.jpg',
+          './images/sample_3.jpg'
+        ]
       ],
 
       p3Images: [],
@@ -83,15 +83,13 @@
             _this.currentPage = 1;
             _this.worksLinkActive = false;
             _this.changeArrow();
-            _this.ajustHeaderWidth();
             m.redraw();
           }, 100);
         });
       },
 
-      ajustHeaderWidth: function () {
-        var header = document.querySelector('.diext header');
-            clientWidth = document.body.clientWidth;
+      adjustHeaderWidth: function (header) {
+        var clientWidth = document.body.clientWidth;
         var scrollDefaultWidth = 16;
         if (this.os === 'mac') {
           scrollDefaultWidth = 12;
@@ -315,9 +313,13 @@
 
         var _this = this;
         this.preImgControl(imgIdx);
-        m.sync(this.lazyLoadImages('.img-detail', true)).then(function () {
-          _this.imgDetailDone = true;
-        });
+        if (isServer) {
+          m.sync(this.lazyLoadImages('.img-detail', true)).then(function () {
+            _this.imgDetailDone = true;
+          });
+        } else {
+          this.imgDetailDone = true;
+        }
         this.paramControl(true);
       },
       paramControl: function (showDetail) {
@@ -334,8 +336,7 @@
           this.domAnimation(imgDetail, 'opacity');
 
           setTimeout(function () {
-              imgDetail.scrollTop = 0;
-              _this.ajustHeaderWidth();
+            imgDetail.scrollTop = 0;
           }, this.pageScrollInterval * 10);
 
         } else {
@@ -380,12 +381,12 @@
       } else {
         showLoading = true;
       }
-      
+
       attrs.config = function (element) {
-    	  var imgContainer = element.parentNode;
-    	  if (!showLoading) {
-    		  imgContainer.style.height = 'auto';
-    		  imgContainer.style.marginLeft = '0';
+        var imgContainer = element.parentNode;
+        if (!showLoading) {
+          imgContainer.style.height = 'auto';
+          imgContainer.style.marginLeft = '0';
 
           if (ctrl.currentPage === 2) {
             if (typeof $ !== 'undefined') {
@@ -409,9 +410,15 @@
     },
 
     view: function (ctrl) {
-      var isServer = ctrl.isServer();
+      var isServer = ctrl.isServer(), isAdjustWidth = (ctrl.seeImgDetail || ctrl.currentPage === 2);
       return [
-        m('header' + (ctrl.seeImgDetail ? '.white-bg' : ''), [
+        m('header' + (isAdjustWidth ? '.white-bg' : ''), {
+          config: function (element) {
+            if (isAdjustWidth) {
+              ctrl.adjustHeaderWidth.call(ctrl, element);
+            }
+          }
+        }, [
           m('div.left', [
             m('span.logo'),
             m('span.txt', 'DIEXT LAB')
@@ -462,9 +469,10 @@
             });
           }));
         })),
-        m('div.img-detail' + (ctrl.seeImgDetail ? (ctrl.imgDetailDone ? '' : '.black-bg') : ''), [
+        m('div.img-detail' + (ctrl.seeImgDetail ? (ctrl.imgDetailDone ?
+            '.default-color' : '.black-bg') : '.default-color'), [
           m('div.top'),
-          m('div.main', ctrl.p3Images[ctrl.currentImg].map(function(image) {
+          m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image) {
             return index.imageView(ctrl, image, isServer, {
               height: '760',
               width: '1080',

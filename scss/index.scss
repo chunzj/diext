@@ -212,6 +212,10 @@ html {
 
     .row {
       background-color: #000;
+      
+      img {
+        cursor: pointer;
+      }
     }
 
     @include imgLazy(33.3333%);
@@ -225,8 +229,11 @@ html {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #1e1e1e;
     z-index: 744;
+
+    &.default-color {
+      background-color: #1e1e1e;
+    }
 
     .main {
       width: 56.25%;

@@ -693,6 +693,9 @@ html {
 .diext caption.p2 .row {
   background-color: #000;
 }
+.diext caption.p2 .row img {
+  cursor: pointer;
+}
 .diext caption.p2 .img {
   display: inline-block;
   width: 33.3333%;
@@ -724,8 +727,10 @@ html {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #1e1e1e;
   z-index: 744;
+}
+.diext .img-detail.default-color {
+  background-color: #1e1e1e;
 }
 .diext .img-detail .main {
   width: 56.25%;
