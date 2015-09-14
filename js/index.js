@@ -55,6 +55,7 @@
       totalPages: 2,
       pageScrollInterval: 1,
       browser: null,
+      os: null,
       scrollDone: true,
       worksLinkActive: false,
       seeImgDetail: false,
@@ -90,7 +91,11 @@
       ajustHeaderWidth: function () {
         var header = document.querySelector('.diext header');
             clientWidth = document.body.clientWidth;
-        header.style.width = ((1 - 16 / clientWidth).toFixed(4) * 100) + '%';
+        var scrollDefaultWidth = 16;
+        if (this.os === 'mac') {
+          scrollDefaultWidth = 12;
+        }
+        header.style.width = ((1 - scrollDefaultWidth / clientWidth).toFixed(4) * 100) + '%';
       },
 
       initImgResource: function () {
@@ -135,6 +140,12 @@
               version: patternRes[1]
             };
           }
+        }
+
+        if (userAgent.toLowerCase().indexOf('windows') !== -1) {
+          this.os = 'windows';
+        } else if (userAgent.toLowerCase().indexOf('mac') !== -1) {
+          this.os = 'mac';
         }
       },
 
