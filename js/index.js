@@ -59,6 +59,7 @@
       scrollDone: true,
       worksLinkActive: false,
       seeImgDetail: false,
+      imgDetailDone: false,
       showDeleteIcon: false,
       showLinkIcon: false,
       currentImg: 0,
@@ -264,17 +265,20 @@
       lazyLoadImages: function (container, redraw) {
         var lazyLoadImgs = document.querySelectorAll(container + ' img[data-url]'), _this = this, deferrs = [];
         if (lazyLoadImgs.length > 0) {
-          var img = null, loadingImgs = [];
+          var img = null, loadingImgs = [], deferred = m.deferred();
           [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom) {
 
             var imgUrl = imgDom.getAttribute('data-url'),
               loaded = _this.imageLoaded[imgUrl];
 
+            deferrs.push(deferred.promise);
+
             if (typeof loaded === 'undefined' || loaded || loadingImgs.indexOf(imgUrl, 0) !== -1) {
+              deferred.resolve();
               return;
             }
 
-            deferrs.push(_this.loadImg(imgUrl, redraw));
+            _this.loadImg(imgUrl, deferred, redraw);
 
             loadingImgs.push(imgUrl);
           });
@@ -282,8 +286,8 @@
 
         return deferrs;
       },
-      loadImg: function (imgUrl, redraw) {
-        var deferred = m.deferred(), img = new Image(), _this = this;
+      loadImg: function (imgUrl, deferred, redraw) {
+        var img = new Image(), _this = this;
         img.src = imgUrl;
         img.onload = function () {
 
@@ -299,8 +303,6 @@
           console.log('Image url(' + imgUrl + ') load error!');
           deferred.reject();
         };
-
-        return deferred.promise;
       },
       preImgControl: function (imgIdx) {
         this.currentImg = imgIdx || 0;
@@ -311,17 +313,12 @@
           return;
         }
 
-        this.preImgControl(imgIdx);
-
         var _this = this;
-        if (isServer) {
-          m.sync(this.lazyLoadImages('.img-detail')).then(function () {
-            _this.paramControl(true);
-            m.redraw();
-          });
-        } else {
-          this.paramControl(true);
-        }
+        this.preImgControl(imgIdx);
+        m.sync(this.lazyLoadImages('.img-detail', true)).then(function () {
+          _this.imgDetailDone = true;
+        });
+        this.paramControl(true);
       },
       paramControl: function (showDetail) {
         var imgDetail = document.querySelector('.diext .img-detail'), _this = this;
@@ -385,16 +382,29 @@
       }
       
       attrs.config = function (element) {
-    	  var imgContainer = element.parentNode, clsName = imgContainer.className;
+    	  var imgContainer = element.parentNode;
     	  if (!showLoading) {
     		  imgContainer.style.height = 'auto';
     		  imgContainer.style.marginLeft = '0';
-    	  }
+
+          if (ctrl.currentPage === 2) {
+            if (typeof $ !== 'undefined') {
+              $(element).animate({opacity: 1}, ctrl.pageScrollInterval * 1000);
+            } else {
+              element.style.opacity = 1;
+            }
+
+            ctrl.domAnimation(element, 'opacity');
+            setTimeout(function () {
+              imgContainer.querySelector('.loading').style.display = 'none';
+            }, ctrl.pageScrollInterval * 1000);
+          }
+        }
       }
 
       return m('div.img' + (showLoading ? '.default' : ''), imgAttrs, [
-        showLoading ? m('span.loading', 'Loading') : '',
-        m('img', attrs)
+        m('span.loading', 'Loading'),
+        m('img' + (!showLoading ? '.invisible' : ''), attrs)
       ]);
     },
 
@@ -447,14 +457,19 @@
             return index.imageView(ctrl, image, isServer, {
               onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, isServer, !!image),
               height: '438',
-              width: '640'
+              width: '640',
+              scale: '0.333333'
             });
           }));
         })),
-        m('div.img-detail', [
+        m('div.img-detail' + (ctrl.seeImgDetail ? (ctrl.imgDetailDone ? '' : '.black-bg') : ''), [
           m('div.top'),
           m('div.main', ctrl.p3Images[ctrl.currentImg].map(function(image) {
-            return index.imageView(ctrl, image, isServer);
+            return index.imageView(ctrl, image, isServer, {
+              height: '760',
+              width: '1080',
+              scale: '0.5'
+            });
           }))
         ]),
         m('footer', [

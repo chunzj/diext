@@ -31,10 +31,11 @@
 
       var rowContainer = img.parentNode,
         imgContainers = rowContainer.querySelectorAll('.img'),
-        images = rowContainer.querySelectorAll('img');
+        images = rowContainer.querySelectorAll('img'),
+          scale = Number(img.getAttribute('scale'));
 
       if (images.length === imgContainers.length) {
-        img.style.height = ((((clientWidth * 0.333333) * initialHeight) / initialWidth).toFixed(2) - 4) + 'px';
+        img.style.height = ((((clientWidth * scale) * initialHeight) / initialWidth).toFixed(2) - 4) + 'px';
         img.style.marginLeft = '-1px';
         img.querySelector('img').style.visibility = 'hidden';
       }
