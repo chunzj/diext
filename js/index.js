@@ -403,8 +403,8 @@
         this.deleteImageDetail();
         this.previousPage();
       },
-      imageScale: function (dom, changeBigger, isValidImg) {
-        if (!isValidImg) {
+      imageScale: function (dom, changeBigger, isValidImg, addScale) {
+        if (!isValidImg || !addScale){
           return;
         }
 
@@ -435,7 +435,7 @@
       return vm;
     },
 
-    imageView: function (ctrl, image, isServer, imgAttrs) {
+    imageView: function (ctrl, image, isServer, imgAttrs, addScale) {
       var attrs = {}, showLoading = false;
       if (image) {
         if (isServer && !ctrl.imageLoaded[image]) {
@@ -470,11 +470,11 @@
       }
 
       attrs.onmouseover = function () {
-        ctrl.imageScale.call(ctrl, this, true, !!image);
+        ctrl.imageScale.call(ctrl, this, true, !!image, addScale);
       };
 
       attrs.onmouseout = function () {
-        ctrl.imageScale.call(ctrl, this, false, !!image);
+        ctrl.imageScale.call(ctrl, this, false, !!image, addScale);
       }
 
       return m('div.img' + (showLoading ? '.default' : ''), imgAttrs, [
@@ -540,7 +540,7 @@
               height: '438',
               width: '640',
               scale: '0.333333'
-            });
+            }, true);
           }));
         })),
         m('div.img-detail' + (ctrl.seeImgDetail ? (ctrl.imgDetailDone ?
@@ -551,7 +551,7 @@
               height: ctrl.sizeImages[image].height,
               width: ctrl.sizeImages[image].width || '1080',
               scale: '0.5'
-            });
+            }, false);
           }))
         ]),
         m('footer', [
