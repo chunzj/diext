@@ -2,7 +2,7 @@
  * Created by chunzj on 2015/9/9.
  */
 (function () {
-  var diextPage = {
+  var diextPcPage = {
     initialized: false,
 
     viewModel: {
@@ -92,20 +92,39 @@
         this.bindResizeEvent();
       },
 
+      showCaptions: function (isShow) {
+        var captions = document.querySelectorAll('.diext caption');
+        [].slice.call(captions, 0, captions.length).forEach(function (caption) {
+          caption.style.opacity = isShow ? 1 : 0;
+        });
+      },
+
       bindResizeEvent: function () {
         var _this = this, resizeTimer = false;
         tool.addEvent(window, 'resize', function (evt) {
-          if (resizeTimer) {
-            clearTimeout(resizeTimer);
+          var header = null;
+          if (!header) {
+            header = document.querySelector('.diext header');
           }
 
-          resizeTimer = setTimeout(function () {
-            _this.currentPage = 1;
-            _this.worksLinkActive = false;
-            _this.changeArrow();
-            _this.adjustHeaderWidth();
-            m.redraw();
-          }, 100);
+          _this.showCaptions(false);
+
+          if (resizeTimer) {
+            clearTimeout(resizeTimer);
+            resizeTimer = null;
+          }
+
+          if (header) {
+            resizeTimer = setTimeout(function () {
+              _this.showCaptions(true);
+
+              _this.currentPage = 1;
+              _this.worksLinkActive = false;
+              _this.changeArrow();
+              _this.adjustHeaderWidth(header);
+              m.redraw();
+            }, 100);
+          }
         });
       },
 
@@ -115,11 +134,6 @@
         if (this.os === 'mac') {
           scrollDefaultWidth = 12;
         }
-
-        if (!header) {
-          header = document.querySelector('.diext header');
-        }
-
         header.style.width = ((1 - scrollDefaultWidth / clientWidth).toFixed(4) * 100) + '%';
       },
 
@@ -429,7 +443,7 @@
     },
     controller: function () {
 
-      var vm = diextPage.viewModel;
+      var vm = diextPcPage.viewModel;
       vm.init();
 
       return vm;
@@ -537,7 +551,7 @@
         ]))),
         m('caption.p2', ctrl.p2Images.map(function (imageRow, outerIndex) {
           return m('div.row', imageRow.map(function (image, idx) {
-            return diextPage.imageView(ctrl, image, isServer, {
+            return diextPcPage.imageView(ctrl, image, isServer, {
               onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, isServer, !!image),
               height: '438',
               width: '640',
@@ -549,7 +563,7 @@
             '.default-color' : '.black-bg') : '.default-color'), [
           m('div.top'),
           m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image) {
-            return diextPage.imageView(ctrl, image, isServer, {
+            return diextPcPage.imageView(ctrl, image, isServer, {
               height: ctrl.sizeImages[image].height,
               width: ctrl.sizeImages[image].width || '1080',
               scale: '0.5'
@@ -565,5 +579,49 @@
     }
   };
 
-  m.mount(document.querySelector('.diext'), diextPage);
+  var diextMobilePage = {
+    viewModel: {
+
+    },
+    controller: function () {
+      return diextMobilePage.viewModel;
+    },
+    view: function () {
+      return [
+        m('div#main', [
+          m('header', [
+            m('div.left', m('span.text', 'DIEXT LAB')),
+            m('nav.right', [
+              m('a', 'WORKS'),
+              m('a', 'ABOUT')
+            ]),
+            m('di.clear')
+          ]),
+          m('div.content', [
+            m('img.frame', {src: './images/bigword.svg'}),
+            m('img.john', {src: './images/lines.svg'}),
+            m('img.lower', {src: './images/smallword.svg'})
+          ])
+        ])
+      ];
+    }
+  };
+
+  function loadPage() {
+    var container = document.querySelector('.diext'), classList = container.classList;
+    if (tool.isPhone()) {
+      classList.add('diext-m');
+      classList.remove('diext-p');
+      m.mount(container, diextMobilePage);
+    } else {
+      classList.add('diext-p');
+      classList.remove('diext-m');
+      m.mount(container, diextPcPage);
+    }
+  }
+
+  loadPage();
+  tool.addEvent(window, 'resize', function () {
+    loadPage();
+  });
 })();

@@ -2,6 +2,7 @@
  * Created by chunzj on 2015/9/12.
  */
 (function() {
+    var switchPhoneMaxWidth = 1080;
     var tool = {
         addEvent: function (domNode, type, fn) {
             if (domNode.addEventListener) {
@@ -36,8 +37,17 @@
         scrollDirection: function(evt) {
             evt = evt || window.event;
             return (evt.wheelDelta) ? evt.wheelDelta / 120 : -(evt.detail || 0) / 3;
+        },
+        checkPlatform: function () {
+            var userAgent = navigator.userAgent.toLowerCase();
+            this._isPhone = userAgent.indexOf('mobile') !== -1;
+        },
+        isPhone: function () {
+            return this._isPhone || window.innerWidth <= switchPhoneMaxWidth;
         }
+
     };
 
+    tool.checkPlatform();
     window.tool = tool;
 })();

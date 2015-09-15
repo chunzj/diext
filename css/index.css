@@ -516,11 +516,11 @@ html {
   font-size: 62.5%;
 }
 
-.diext {
+.diext-p {
   overflow: hidden;
   position: relative;
 }
-.diext header {
+.diext-p header {
   z-index: 777;
   height: 7.5rem;
   position: fixed;
@@ -528,7 +528,7 @@ html {
   top: 0;
   left: 0;
 }
-.diext header .left {
+.diext-p header .left {
   position: relative;
   top: 50%;
   margin-top: -1.25rem;
@@ -537,7 +537,7 @@ html {
   font-size: 1.8rem;
   cursor: pointer;
 }
-.diext header .logo {
+.diext-p header .logo {
   background: url("../images/icons.png") no-repeat;
   background-position: left center;
   background-size: 17.2rem auto;
@@ -548,23 +548,23 @@ html {
   vertical-align: -60%;
   cursor: pointer;
 }
-.diext header .right {
+.diext-p header .right {
   position: relative;
   top: 50%;
   margin-top: -1.25rem;
   margin-right: 6rem;
 }
-.diext header a {
+.diext-p header a {
   display: inline-block;
   color: #c0bfbf;
   font-size: 1.4rem;
   cursor: pointer;
 }
-.diext header a:not(:last-child) {
+.diext-p header a:not(:last-child) {
   margin-right: 6.8rem;
   line-height: 2.6rem;
 }
-.diext header .scrollDown {
+.diext-p header .scrollDown {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -575,7 +575,7 @@ html {
   margin-left: -4.35rem;
   margin-top: -0.55rem;
 }
-.diext header .scrollDown .icon {
+.diext-p header .scrollDown .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -587,10 +587,10 @@ html {
   width: 3.3rem;
   height: 1.1rem;
 }
-.diext header .active {
+.diext-p header .active {
   color: #000;
 }
-.diext header .deleteIcon {
+.diext-p header .deleteIcon {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -599,7 +599,7 @@ html {
   width: 7.6rem;
   height: 7.5rem;
 }
-.diext header .deleteIcon .icon {
+.diext-p header .deleteIcon .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -611,7 +611,7 @@ html {
   width: 2.6rem;
   height: 2.6rem;
 }
-.diext header .linkIcon {
+.diext-p header .linkIcon {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -621,7 +621,7 @@ html {
   height: 7.5rem;
   margin-left: 7.6rem;
 }
-.diext header .linkIcon .icon {
+.diext-p header .linkIcon .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -633,7 +633,7 @@ html {
   width: 2.6rem;
   height: 2.6rem;
 }
-.diext caption.p1 {
+.diext-p caption.p1 {
   -webkit-perspective: 1500px;
           perspective: 1500px;
   overflow: hidden;
@@ -643,11 +643,11 @@ html {
   left: 0;
   z-index: 756;
 }
-.diext caption.p1 .main {
+.diext-p caption.p1 .main {
   height: 90%;
   width: 100%;
 }
-.diext caption.p1 .card {
+.diext-p caption.p1 .card {
   height: 100%;
   width: 100%;
   position: relative;
@@ -656,7 +656,7 @@ html {
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
 }
-.diext caption.p1 .frame {
+.diext-p caption.p1 .frame {
   position: absolute;
   top: 38%;
   left: 26.1%;
@@ -666,7 +666,7 @@ html {
   height: 22%;
   z-index: 444;
 }
-.diext caption.p1 .john {
+.diext-p caption.p1 .john {
   position: absolute;
   top: -2%;
   left: 14.6%;
@@ -676,7 +676,7 @@ html {
   height: 115%;
   z-index: 222;
 }
-.diext caption.p1 .lower {
+.diext-p caption.p1 .lower {
   position: absolute;
   top: 68.1%;
   left: 34.4%;
@@ -686,7 +686,7 @@ html {
   height: 9.45%;
   z-index: 333;
 }
-.diext caption.p2 {
+.diext-p caption.p2 {
   overflow: auto;
   width: 100%;
   position: absolute;
@@ -696,24 +696,24 @@ html {
   margin-left: -1px;
   z-index: 755;
 }
-.diext caption.p2 .img {
+.diext-p caption.p2 .img {
   overflow: hidden;
 }
-.diext caption.p2 .row {
+.diext-p caption.p2 .row {
   margin-top: -2px;
   margin-left: -1px;
   background-color: #000;
 }
-.diext caption.p2 .row img {
+.diext-p caption.p2 .row img {
   cursor: pointer;
 }
-.diext caption.p2 .img {
+.diext-p caption.p2 .img {
   display: inline-block;
   width: 33.3333%;
   height: auto;
   position: relative;
 }
-.diext caption.p2 .img .loading {
+.diext-p caption.p2 .img .loading {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -727,11 +727,11 @@ html {
   padding-top: 40px;
   text-align: center;
 }
-.diext caption.p2 img {
+.diext-p caption.p2 img {
   width: 100%;
   height: 100%;
 }
-.diext .img-detail {
+.diext-p .img-detail {
   opacity: 0;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -741,21 +741,21 @@ html {
   left: 0;
   z-index: 744;
 }
-.diext .img-detail.default-color {
+.diext-p .img-detail.default-color {
   background-color: #000;
 }
-.diext .img-detail .main {
+.diext-p .img-detail .main {
   width: 56.25%;
   height: auto;
   margin: 0 auto;
 }
-.diext .img-detail .img {
+.diext-p .img-detail .img {
   display: inline-block;
   width: 100%;
   height: auto;
   position: relative;
 }
-.diext .img-detail .img .loading {
+.diext-p .img-detail .img .loading {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -769,11 +769,11 @@ html {
   padding-top: 40px;
   text-align: center;
 }
-.diext .img-detail img {
+.diext-p .img-detail img {
   width: 100%;
   height: 100%;
 }
-.diext footer {
+.diext-p footer {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -782,7 +782,7 @@ html {
   height: 5.4rem;
   z-index: 800;
 }
-.diext footer .scrollUp {
+.diext-p footer .scrollUp {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -792,7 +792,7 @@ html {
   height: 5.4rem;
   margin-left: -4.35rem;
 }
-.diext footer .scrollUp .icon {
+.diext-p footer .scrollUp .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -803,4 +803,37 @@ html {
   background-size: 17.2rem auto;
   width: 3.3rem;
   height: 1.1rem;
+}
+
+.diext-m header {
+  position: relative;
+  padding: 3rem 4.8rem 0 2.8rem;
+  line-height: 2.5rem;
+}
+.diext-m header .left {
+  color: #c0bfbf;
+  font-size: 1.8rem;
+}
+.diext-m header .left:before {
+  position: absolute;
+  top: 50%;
+  content: '';
+  display: inline-block;
+  background: url("../images/icons.png") no-repeat;
+  background-position: left center;
+  background-size: 17.2rem auto;
+  height: 2.5rem;
+  width: 3.0rem;
+}
+.diext-m header .left .text {
+  margin-left: 4.6rem;
+}
+.diext-m header .right {
+  font-size: 1.4rem;
+}
+.diext-m header .right a:not(:first-child) {
+  margin-left: 6.8rem;
+}
+.diext-m header a {
+  color: #c0bfbf;
 }
