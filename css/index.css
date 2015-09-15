@@ -687,6 +687,7 @@ html {
   z-index: 333;
 }
 .diext caption.p2 {
+  background-color: #000;
   overflow: auto;
   width: 100%;
   position: absolute;
