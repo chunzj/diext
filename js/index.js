@@ -454,7 +454,8 @@
           imgContainer.style.height = 'auto';
           imgContainer.style.marginLeft = '0';
 
-          if (ctrl.currentPage === 2) {
+          if (ctrl.currentPage === 2 && !element.animationDone) {
+            element.animationDone = false;
             if (typeof $ !== 'undefined') {
               $(element).animate({opacity: 1}, ctrl.pageScrollInterval * 1000);
             } else {
@@ -464,7 +465,8 @@
             ctrl.domAnimation(element);
             setTimeout(function () {
               imgContainer.querySelector('.loading').style.display = 'none';
-            }, ctrl.pageScrollInterval * 1000);
+            }, ctrl.pageScrollInterval * 100);
+            element.animationDone = true;
           }
         }
       }
