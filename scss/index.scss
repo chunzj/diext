@@ -208,7 +208,6 @@ html {
   }
 
   caption.p2 {
-    background-color: #000;
     overflow: auto;
     width: 100%;
     position: absolute;
@@ -218,7 +217,13 @@ html {
     margin-left: -1px;
     z-index: 755;
 
+    .img {
+      overflow: hidden;
+    }
+
     .row {
+      margin-top: -2px;
+      margin-left: -1px;
       background-color: #000;
       
       img {

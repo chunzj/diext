@@ -278,7 +278,16 @@
       },
 
       domAnimation: function (dom, styleName, interval) {
-        if (typeof interval === 'undefined') {
+        if (arguments.length === 2) {
+          if (typeof  arguments[1] === 'string') {
+            styleName = arguments[1];
+            interval = this.pageScrollInterval;
+          } else if (typeof  arguments[1] === 'number') {
+            interval = arguments[1];
+            styleName = 'all';
+          }
+        } else if (arguments.length === 1) {
+          styleName = 'all';
           interval = this.pageScrollInterval;
         }
 
@@ -410,12 +419,12 @@
           dom.style.zIndex = 'inherit';
         }
 
-        dom.style.transform = "scale3d(" + x + "," + y + "," +  z +")";
-        dom.style['-moz-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
-        dom.style['-webkit-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
-        dom.style['-o-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
+        dom.style.transform = "scale(" + x + "," + y +")";
+        dom.style['-moz-transform'] = "scale(" + x + "," + y + ")";
+        dom.style['-webkit-transform'] = "scale(" + x + "," + y + ")";
+        dom.style['-o-transform'] = "scale(" + x + "," + y + ")";
 
-        this.domAnimation(dom, 'transform', 1.5);
+        this.domAnimation(dom, 1.5);
       }
     },
     controller: function () {
@@ -452,12 +461,20 @@
               element.style.opacity = 1;
             }
 
-            ctrl.domAnimation(element, 'opacity');
+            ctrl.domAnimation(element);
             setTimeout(function () {
               imgContainer.querySelector('.loading').style.display = 'none';
             }, ctrl.pageScrollInterval * 1000);
           }
         }
+      }
+
+      attrs.onmouseover = function () {
+        ctrl.imageScale.call(ctrl, this, true, !!image);
+      };
+
+      attrs.onmouseout = function () {
+        ctrl.imageScale.call(ctrl, this, false, !!image);
       }
 
       return m('div.img' + (showLoading ? '.default' : ''), imgAttrs, [
@@ -522,13 +539,7 @@
               onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, isServer, !!image),
               height: '438',
               width: '640',
-              scale: '0.333333',
-              onmouseover: function () {
-                ctrl.imageScale.call(ctrl, this, true, !!image);
-              },
-              onmouseout: function () {
-                ctrl.imageScale.call(ctrl, this, false, !!image);
-              }
+              scale: '0.333333'
             });
           }));
         })),
