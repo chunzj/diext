@@ -6,6 +6,7 @@
 
 html {
   font-size: 62.5%;
+  max-width: 192rem;
 }
 
 @mixin iconContainer ($left, $bg, $width, $height) {
@@ -20,7 +21,7 @@ html {
   height: $height;
 }
 
-@mixin spriteIcon ($bgLeft, $bgTop, $width:4.4rem, $height:1.2rem) {
+@mixin spriteIcon ($bgLeft, $bgTop, $width:3.3rem, $height:1.1rem) {
   display: inline-block;
   position: absolute;
   top: 50%;
@@ -57,10 +58,9 @@ html {
 
       height: 3.5rem;
       background: url('../images/loading.gif') 55% top no-repeat;
-      background-size: 3.5rem auto;
       font-size: 1.2rem;
       color: #7f7e7e;
-      padding-top: 4rem;
+      padding-top: 40px;
     }
   }
 
@@ -83,10 +83,13 @@ html {
     left: 0;
 
     .left {
-      margin-top: 3.1rem;
+      position: relative;
+      top: 50%;
+      margin-top: -1.25rem;
       margin-left: 1.46%;
       color: #BFBFBF;
       font-size: 1.8rem;
+      cursor: pointer;
     }
 
     .logo {
@@ -98,10 +101,13 @@ html {
       display: inline-block;
       margin-right: 1.6rem;
       vertical-align: -60%;
+      cursor: pointer;
     }
 
     .right {
-      margin-top: 3.2rem;
+      position: relative;
+      top: 50%;
+      margin-top: -1.25rem;
       margin-right: 6rem;
     }
 
@@ -118,7 +124,7 @@ html {
     }
 
     .scrollDown {
-      @include arrowStyle(22%, bottom);
+      @include arrowStyle(26%, bottom);
       margin-top: -0.55rem;
     }
 
@@ -129,7 +135,7 @@ html {
     .deleteIcon {
       @include iconContainer(21.875%, #ff4646, 7.6rem, 7.5rem);
       & .icon {
-        @include spriteIcon(78%, bottom, 2rem, 2rem);
+        @include spriteIcon(78%, bottom, 2.6rem, 2.6rem);
       }
     }
 
@@ -137,7 +143,7 @@ html {
       @include iconContainer(21.875%, #fff, 9.4rem, 7.5rem);
       margin-left: 7.6rem;
       & .icon {
-        @include spriteIcon(right, bottom, 2.3rem, 2.4rem);
+        @include spriteIcon(right, bottom, 2.6rem, 2.6rem);
       }
     }
   }
@@ -254,7 +260,7 @@ html {
     z-index: 800;
 
     .scrollUp {
-      @include arrowStyle(22%, top);
+      @include arrowStyle(26%, top);
     }
   }
 }

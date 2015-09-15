@@ -2,7 +2,7 @@
  * Created by chunzj on 2015/9/9.
  */
 (function () {
-  var index = {
+  var diextPage = {
     initialized: false,
 
     viewModel: {
@@ -18,10 +18,30 @@
         './images/1080banyan_01_04.jpg': false,
         './images/1080banyan_01_05.jpg': false,
         './images/1080banyan_01_06.jpg': false,
-        './images/1080banyan_01_07.jpg': false,
-        './images/1080banyan_02_01.jpg': false,
-        './images/1080banyan_02_02.jpg': false,
-        './images/1080banyan_02_03.jpg': false,
+        './images/1080banyan_01_07.jpg': false
+      },
+      sizeImages: {
+        './images/1080banyan_01_01.jpg': {
+          height: '342'
+        },
+        './images/1080banyan_01_02.jpg': {
+          height: '760'
+        },
+        './images/1080banyan_01_03.jpg': {
+          height: '1596'
+        },
+        './images/1080banyan_01_04.jpg': {
+          height: '699'
+        },
+        './images/1080banyan_01_05.jpg': {
+          height: '977'
+        },
+        './images/1080banyan_01_06.jpg': {
+          height: '658'
+        },
+        './images/1080banyan_01_07.jpg': {
+          height: '1447'
+        }
       },
       p2Images: [
         [
@@ -35,19 +55,19 @@
           ''
         ],
         [
-          './images/sample_1.jpg',
-          './images/sample_2.jpg',
-          './images/sample_3.jpg'
+          './images/sample_4.jpg',
+          '',
+          ''
         ],
         [
-          './images/sample_1.jpg',
-          './images/sample_2.jpg',
-          './images/sample_3.jpg'
+          '',
+          '',
+          './images/sample_4.jpg'
         ]
       ],
 
       p3Images: [],
-      p3ImagesNum: [7, 3],
+      p3ImagesNum: [7],
 
       showArrowUp: false,
       showArrowDown: false,
@@ -83,17 +103,23 @@
             _this.currentPage = 1;
             _this.worksLinkActive = false;
             _this.changeArrow();
+            _this.adjustHeaderWidth();
             m.redraw();
           }, 100);
         });
       },
 
       adjustHeaderWidth: function (header) {
-        var clientWidth = document.body.clientWidth;
+        var clientWidth = window.innerWidth;
         var scrollDefaultWidth = 16;
         if (this.os === 'mac') {
           scrollDefaultWidth = 12;
         }
+
+        if (!header) {
+          header = document.querySelector('.diext header');
+        }
+
         header.style.width = ((1 - scrollDefaultWidth / clientWidth).toFixed(4) * 100) + '%';
       },
 
@@ -251,12 +277,16 @@
         }, this.pageScrollInterval * 1000);
       },
 
-      domAnimation: function (dom, styleName) {
+      domAnimation: function (dom, styleName, interval) {
+        if (typeof interval === 'undefined') {
+          interval = this.pageScrollInterval;
+        }
+
         if (!this.browser || (this.browser.name === 'IE' && this.browser.version > 9)) {
-          dom.style.transition = styleName + ' ' + this.pageScrollInterval + 's';
-          dom.style['-moz-transition'] = styleName + ' ' + this.pageScrollInterval + 's';
-          dom.style['-webkit-transition'] = styleName + ' ' + this.pageScrollInterval + 's';
-          dom.style['-o-transition'] = styleName + ' ' + this.pageScrollInterval + 's';
+          dom.style.transition = styleName + ' ' + interval + 's';
+          dom.style['-moz-transition'] = styleName + ' ' + interval + 's';
+          dom.style['-webkit-transition'] = styleName + ' ' + interval + 's';
+          dom.style['-o-transition'] = styleName + ' ' + interval + 's';
         }
       },
 
@@ -359,11 +389,38 @@
       isServer: function () {
         var curLoc = location.href;
         return (curLoc.indexOf('http') !== -1);
+      },
+      backToMain: function () {
+        this.deleteImageDetail();
+        this.previousPage();
+      },
+      imageScale: function (dom, changeBigger, isValidImg) {
+        if (!isValidImg) {
+          return;
+        }
+
+        var x = 1, y = 1, z = 1;
+
+        if (changeBigger) {
+          x = 1.5;
+          y = 1.5;
+          z = 1.5;
+          dom.style.zIndex = 999;
+        } else {
+          dom.style.zIndex = 'inherit';
+        }
+
+        dom.style.transform = "scale3d(" + x + "," + y + "," +  z +")";
+        dom.style['-moz-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
+        dom.style['-webkit-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
+        dom.style['-o-transform'] = "scale3d(" + x + "," + y + "," +  z +")";
+
+        this.domAnimation(dom, 'transform', 1.5);
       }
     },
     controller: function () {
 
-      var vm = index.viewModel;
+      var vm = diextPage.viewModel;
       vm.init();
 
       return vm;
@@ -420,8 +477,8 @@
           }
         }, [
           m('div.left', [
-            m('span.logo'),
-            m('span.txt', 'DIEXT LAB')
+            m('span.logo', {onclick: ctrl.backToMain.bind(ctrl)}),
+            m('span.txt', {onclick: ctrl.backToMain.bind(ctrl)}, 'DIEXT LAB')
           ]),
           m('div.right', m('nav', [
             m('a' + (ctrl.worksLinkActive && ctrl.scrollDone ? '.active' : ''), {
@@ -461,11 +518,17 @@
         ]))),
         m('caption.p2', ctrl.p2Images.map(function (imageRow, outerIndex) {
           return m('div.row', imageRow.map(function (image, idx) {
-            return index.imageView(ctrl, image, isServer, {
+            return diextPage.imageView(ctrl, image, isServer, {
               onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, isServer, !!image),
               height: '438',
               width: '640',
-              scale: '0.333333'
+              scale: '0.333333',
+              onmouseover: function () {
+                ctrl.imageScale.call(ctrl, this, true, !!image);
+              },
+              onmouseout: function () {
+                ctrl.imageScale.call(ctrl, this, false, !!image);
+              }
             });
           }));
         })),
@@ -473,9 +536,9 @@
             '.default-color' : '.black-bg') : '.default-color'), [
           m('div.top'),
           m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image) {
-            return index.imageView(ctrl, image, isServer, {
-              height: '760',
-              width: '1080',
+            return diextPage.imageView(ctrl, image, isServer, {
+              height: ctrl.sizeImages[image].height,
+              width: ctrl.sizeImages[image].width || '1080',
               scale: '0.5'
             });
           }))
@@ -489,5 +552,5 @@
     }
   };
 
-  m.mount(document.querySelector('.diext'), index);
+  m.mount(document.querySelector('.diext'), diextPage);
 })();

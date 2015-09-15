@@ -19,7 +19,7 @@
     var captions = document.querySelectorAll('caption'), imgDetail = document.querySelector('.img-detail'),
       defaultImgs = pageContainer.querySelectorAll('.default');
     [].slice.call(captions, 0, captions.length).forEach(function (caption, idx) {
-      caption.style.height = innerHeight + 'px';
+      caption.style.height = ((idx === 0) ? innerHeight : (innerHeight - 75)) + 'px';
       caption.style.top = idx * innerHeight + 'px';
 
       imgDetail.style.height = innerHeight + 'px';

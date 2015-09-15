@@ -514,6 +514,7 @@ input, textarea {
 
 html {
   font-size: 62.5%;
+  max-width: 192rem;
 }
 
 .diext {
@@ -529,10 +530,13 @@ html {
   left: 0;
 }
 .diext header .left {
-  margin-top: 3.1rem;
+  position: relative;
+  top: 50%;
+  margin-top: -1.25rem;
   margin-left: 1.46%;
   color: #BFBFBF;
   font-size: 1.8rem;
+  cursor: pointer;
 }
 .diext header .logo {
   background: url("../images/icons.png") no-repeat;
@@ -543,9 +547,12 @@ html {
   display: inline-block;
   margin-right: 1.6rem;
   vertical-align: -60%;
+  cursor: pointer;
 }
 .diext header .right {
-  margin-top: 3.2rem;
+  position: relative;
+  top: 50%;
+  margin-top: -1.25rem;
   margin-right: 6rem;
 }
 .diext header a {
@@ -574,12 +581,12 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -2.2rem;
-  margin-top: -0.6rem;
-  background: url("../images/icons.png") 22% bottom no-repeat;
+  margin-left: -1.65rem;
+  margin-top: -0.55rem;
+  background: url("../images/icons.png") 26% bottom no-repeat;
   background-size: 17.2rem auto;
-  width: 4.4rem;
-  height: 1.2rem;
+  width: 3.3rem;
+  height: 1.1rem;
 }
 .diext header .active {
   color: #000;
@@ -598,12 +605,12 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -1rem;
-  margin-top: -1rem;
+  margin-left: -1.3rem;
+  margin-top: -1.3rem;
   background: url("../images/icons.png") 78% bottom no-repeat;
   background-size: 17.2rem auto;
-  width: 2rem;
-  height: 2rem;
+  width: 2.6rem;
+  height: 2.6rem;
 }
 .diext header .linkIcon {
   cursor: pointer;
@@ -620,12 +627,12 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -1.15rem;
-  margin-top: -1.2rem;
+  margin-left: -1.3rem;
+  margin-top: -1.3rem;
   background: url("../images/icons.png") right bottom no-repeat;
   background-size: 17.2rem auto;
-  width: 2.3rem;
-  height: 2.4rem;
+  width: 2.6rem;
+  height: 2.6rem;
 }
 .diext caption.p1 {
   -webkit-perspective: 1500px;
@@ -710,10 +717,9 @@ html {
   margin-left: -1.4rem;
   height: 3.5rem;
   background: url("../images/loading.gif") 55% top no-repeat;
-  background-size: 3.5rem auto;
   font-size: 1.2rem;
   color: #7f7e7e;
-  padding-top: 4rem;
+  padding-top: 40px;
 }
 .diext caption.p2 img {
   width: 100%;
@@ -751,10 +757,9 @@ html {
   margin-left: -1.4rem;
   height: 3.5rem;
   background: url("../images/loading.gif") 55% top no-repeat;
-  background-size: 3.5rem auto;
   font-size: 1.2rem;
   color: #7f7e7e;
-  padding-top: 4rem;
+  padding-top: 40px;
 }
 .diext .img-detail img {
   width: 100%;
@@ -784,10 +789,10 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -2.2rem;
-  margin-top: -0.6rem;
-  background: url("../images/icons.png") 22% top no-repeat;
+  margin-left: -1.65rem;
+  margin-top: -0.55rem;
+  background: url("../images/icons.png") 26% top no-repeat;
   background-size: 17.2rem auto;
-  width: 4.4rem;
-  height: 1.2rem;
+  width: 3.3rem;
+  height: 1.1rem;
 }
