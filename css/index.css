@@ -713,11 +713,12 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -1.3rem;
-  margin-left: -1.4rem;
-  height: 3.5rem;
+  margin-top: -37.5px;
+  margin-left: -37.5px;
+  min-width: 75px;
+  min-height: 75px;
   background: url("../images/loading.gif") 55% top no-repeat;
-  font-size: 1.2rem;
+  font-size: 12px;
   color: #7f7e7e;
   padding-top: 40px;
 }
@@ -753,11 +754,12 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -1.3rem;
-  margin-left: -1.4rem;
-  height: 3.5rem;
+  margin-top: -37.5px;
+  margin-left: -37.5px;
+  min-width: 75px;
+  min-height: 75px;
   background: url("../images/loading.gif") 55% top no-repeat;
-  font-size: 1.2rem;
+  font-size: 12px;
   color: #7f7e7e;
   padding-top: 40px;
 }
