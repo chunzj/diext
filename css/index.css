@@ -587,6 +587,9 @@ html {
   width: 3.3rem;
   height: 1.1rem;
 }
+.diext-p header .active {
+  color: #000;
+}
 .diext-p header .deleteIcon {
   cursor: pointer;
   position: absolute;

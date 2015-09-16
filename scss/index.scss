@@ -131,6 +131,10 @@ html {
       margin-top: -0.55rem;
     }
 
+    .active {
+      color: #000;
+    }
+
     .deleteIcon {
       @include iconContainer(21.875%, #ff4646, 7.6rem, 7.5rem);
       & .icon {
