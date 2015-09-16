@@ -4,13 +4,13 @@
 (function (){
   var THUMB_IMAGES = [
     [
-      './images/sample_2.jpg',
       './images/sample_1.jpg',
+      './images/sample_2.jpg',
       './images/sample_3.jpg'
     ],
     [
-      './images/sample_5.jpg',
       './images/sample_4.jpg',
+      './images/sample_5.jpg',
       ''
     ]
   ];
@@ -73,7 +73,6 @@
       worksLinkActive: false,
       aboutLinkActive: false,
       seeImgDetail: false,
-      imgDetailDone: false,
       showDeleteIcon: false,
       showLinkIcon: false,
       currentImg: 0,
@@ -120,6 +119,7 @@
 
               _this.currentPage = 1;
               _this.worksLinkActive = false;
+              _this.aboutLinkActive = false;
               _this.changeArrow();
               _this.adjustHeaderWidth(header);
               m.redraw();
@@ -368,17 +368,19 @@
         this.currentImg = imgIdx || 0;
         m.redraw(true);
       },
-      popImageDetail: function (imgIdx, isValidImg){
+      popImageDetail: function (imgIdx, isValidImg, loadImg){
         if (!isValidImg) {
           return;
         }
 
-        this.aboutLinkActive = true;
         var _this = this;
-        this.preImgControl(imgIdx);
-        m.sync(this.lazyLoadImages('.img-detail', true)).then(function (){
-            _this.imgDetailDone = true;
-        });
+        if (loadImg) {
+          this.preImgControl(imgIdx);
+          m.sync(this.lazyLoadImages('.img-detail', true));
+        } else {
+          this.aboutLinkActive = true;
+        }
+
         this.paramControl(true);
         m.redraw(true);
       },
@@ -531,7 +533,9 @@
                 ctrl.nextPage.call(ctrl);
               }
             }, 'WORKS'),
-            m('a' + (ctrl.aboutLinkActive ? '.active' : ''), 'ABOUT')
+            m('a' + (ctrl.aboutLinkActive ? '.active' : ''), {
+              onclick: ctrl.popImageDetail.bind(ctrl, null, true, false)
+            }, 'ABOUT')
           ])),
           ctrl.showArrowDown ? m('div.scrollDown', {
             onclick: ctrl.previousPage.bind(ctrl)
@@ -539,7 +543,7 @@
           ctrl.showDeleteIcon ? m('div.deleteIcon', {
             onclick: ctrl.deleteImageDetail.bind(ctrl)
           }, m('span.icon')) : '',
-          ctrl.showLinkIcon ? m('div.linkIcon', {
+          false ? m('div.linkIcon', {
             onclick: ctrl.linkToOther.bind(ctrl)
           }, m('span.icon')) : '',
           m('div.clear')
@@ -563,24 +567,31 @@
         m('caption.p2', ctrl.p2Images.map(function (imageRow, outerIndex){
           return m('div.row', imageRow.map(function (image, idx){
             return diextPcPage.imageView(ctrl, image, {
-              onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, !!image),
+              onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, !!image, true),
               height: '438',
               width: '640',
               scale: '0.333333'
             }, true);
           }));
         })),
-        m('div.img-detail' + (ctrl.seeImgDetail ? (ctrl.imgDetailDone ?
-                '.default-color' : '.black-bg') : '.default-color'), [
-          m('div.top'),
-          m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image){
+        m('div.img-detail',
+          !ctrl.aboutLinkActive ? m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image){
             return diextPcPage.imageView(ctrl, image, {
               height: ctrl.sizeImages[image].height,
               width: ctrl.sizeImages[image].width || '1080',
               scale: '0.5'
             }, false);
-          }))
-        ]),
+          })) : m('div.main.about', [
+            m('h3', 'About DIEXT'),
+            m('p.desc', 'DIEXT是一家互联网设计公司，创新与创意是DIEXT设计最核心的竞争力。' +
+              '同时在用户体验方面积累了多年的经验，为客户打造充满美而惊喜的产品体验与服务。' +
+              '我们的业务范围以界面为源点，衍生出用户体验设计、UI视觉设计、营销设计等，覆盖在流行的各种平台'),
+            m('p.contact', [
+              m('span', '合作或咨询，请发邮件至  '),
+              m('a', {href: 'mailto:diecxters@foxmail.com'}, m('strong', 'diecxters@foxmail.com'))
+            ])
+          ])
+        ),
         m('footer', [
           ctrl.showArrowUp ? m('div.scrollUp', {
             onclick: ctrl.nextPage.bind(ctrl)

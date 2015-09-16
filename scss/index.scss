@@ -243,15 +243,40 @@ html {
     top: 0;
     left: 0;
     z-index: 744;
-
-    &.default-color {
-      background-color: #000;
-    }
+    background-color: #000;
+    padding-top: 7.5rem;
 
     .main {
       width: 56.25%;
       height: auto;
       margin: 0 auto;
+    }
+
+    .about {
+      color: #fff;
+      h3 {
+        margin-top: 8.8rem;
+        font-size: 6rem;
+      }
+
+      .desc {
+        margin-top: 7.8rem;
+        line-height: 2.8rem;
+        font-size: 1.6rem;
+      }
+
+      .contact {
+        margin-top: 4rem;
+        font-size: 1.6rem;
+      }
+
+      strong {
+        color: #ff4646;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
     }
 
     @include imgLazy(100%);

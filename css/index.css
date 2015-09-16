@@ -738,14 +738,35 @@ html {
   top: 0;
   left: 0;
   z-index: 744;
-}
-.diext-p .img-detail.default-color {
   background-color: #000;
+  padding-top: 7.5rem;
 }
 .diext-p .img-detail .main {
   width: 56.25%;
   height: auto;
   margin: 0 auto;
+}
+.diext-p .img-detail .about {
+  color: #fff;
+}
+.diext-p .img-detail .about h3 {
+  margin-top: 8.8rem;
+  font-size: 6rem;
+}
+.diext-p .img-detail .about .desc {
+  margin-top: 7.8rem;
+  line-height: 2.8rem;
+  font-size: 1.6rem;
+}
+.diext-p .img-detail .about .contact {
+  margin-top: 4rem;
+  font-size: 1.6rem;
+}
+.diext-p .img-detail .about strong {
+  color: #ff4646;
+}
+.diext-p .img-detail .about a:hover {
+  text-decoration: underline;
 }
 .diext-p .img-detail .img {
   display: block;
