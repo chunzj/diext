@@ -618,7 +618,13 @@
       });
     },
     viewModel: {
-      p2Images: THUMB_IMAGES
+      p2Images: THUMB_IMAGES,
+      backToMain: function () {
+        location.hash = 'main';
+
+        //var mainDom = document.getElementById('main');
+        //mainDom.style.transition = 'all ease 1s';
+      }
     },
     controller: function () {
 
@@ -645,7 +651,7 @@
           ]))
         ]),
         m('div#thumb.thumb', [
-            m('div.title', 'WORKS'),
+            m('div.title', {onclick:ctrl.backToMain.bind(ctrl)}, 'WORKS'),
             m('div.content', ctrl.p2Images.map(function(groupImages) {
               return groupImages.map(function (img) {
                 var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};

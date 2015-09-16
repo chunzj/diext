@@ -806,17 +806,18 @@ html {
 }
 
 .diext-m .main header {
-  position: relative;
   padding: 3rem 4.8rem 0 2.8rem;
   line-height: 2.5rem;
 }
 .diext-m .main header .left {
   color: #c0bfbf;
   font-size: 1.8rem;
+  position: relative;
 }
 .diext-m .main header .left:before {
   position: absolute;
   top: 50%;
+  margin-top: -1.25rem;
   content: '';
   display: inline-block;
   background: url("../images/icons.png") no-repeat;
