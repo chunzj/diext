@@ -15,19 +15,33 @@
     ]
   ];
 
+  var THUMB_DETAIL_MAP = {
+    './images/sample_1.jpg': '',
+    './images/sample_2.jpg': 'guogan',
+    './images/sample_3.jpg': '',
+    './images/sample_4.jpg': '',
+    './images/sample_5.jpg': 'banyan'
+  };
+
   var IMG_CACHE = {
     './images/sample_1.jpg': false,
     './images/sample_2.jpg': false,
     './images/sample_3.jpg': false,
     './images/sample_4.jpg': false,
     './images/sample_5.jpg': false,
-    './images/1080banyan_01_01.jpg': false,
-    './images/1080banyan_01_02.jpg': false,
-    './images/1080banyan_01_03.jpg': false,
-    './images/1080banyan_01_04.jpg': false,
-    './images/1080banyan_01_05.jpg': false,
-    './images/1080banyan_01_06.jpg': false,
-    './images/1080banyan_01_07.jpg': false
+    './images/banyan_01.jpg': false,
+    './images/banyan_02.jpg': false,
+    './images/banyan_03.jpg': false,
+    './images/banyan_04.jpg': false,
+    './images/banyan_05.jpg': false,
+    './images/banyan_06.jpg': false,
+    './images/banyan_07.jpg': false,
+    './images/guogan_01.jpg': false,
+    './images/guogan_02.jpg': false,
+    './images/guogan_03.jpg': false,
+    './images/guogan_04.jpg': false,
+    './images/guogan_05.jpg': false,
+    './images/guogan_06.jpg': false
   };
 
   var diextPcPage = {
@@ -35,32 +49,50 @@
 
     viewModel: {
       sizeImages: {
-        './images/1080banyan_01_01.jpg': {
+        './images/banyan_01.jpg': {
           height: '342'
         },
-        './images/1080banyan_01_02.jpg': {
+        './images/banyan_02.jpg': {
           height: '760'
         },
-        './images/1080banyan_01_03.jpg': {
+        './images/banyan_03.jpg': {
           height: '1596'
         },
-        './images/1080banyan_01_04.jpg': {
+        './images/banyan_04.jpg': {
           height: '699'
         },
-        './images/1080banyan_01_05.jpg': {
+        './images/banyan_05.jpg': {
           height: '977'
         },
-        './images/1080banyan_01_06.jpg': {
+        './images/banyan_06.jpg': {
           height: '658'
         },
-        './images/1080banyan_01_07.jpg': {
+        './images/banyan_07.jpg': {
           height: '1447'
+        },
+        './images/guogan_01.jpg': {
+          height: '996'
+        },
+        './images/guogan_02.jpg': {
+          height: '896'
+        },
+        './images/guogan_03.jpg': {
+          height: '785'
+        },
+        './images/guogan_04.jpg': {
+          height: '1096'
+        },
+        './images/guogan_05.jpg': {
+          height: '720'
+        },
+        './images/guogan_06.jpg': {
+          height: '843'
         }
       },
       p2Images: THUMB_IMAGES,
 
       p3Images: [],
-      p3ImagesNum: [7],
+      p3ImagesNum: [0, 6, 0, 0, 7],
 
       showArrowUp: false,
       showArrowDown: false,
@@ -120,6 +152,8 @@
               _this.currentPage = 1;
               _this.worksLinkActive = false;
               _this.aboutLinkActive = false;
+              _this.showDeleteIcon = false;
+
               _this.changeArrow();
               _this.adjustHeaderWidth(header);
               m.redraw();
@@ -142,11 +176,17 @@
         this.p2Images.forEach(function (subImages, idx){
           row = idx * subImages.length;
           subImages.forEach(function (img, index){
+            var nameMap = THUMB_DETAIL_MAP[img];
+
             var imgNum = row + index;
             _this.p3Images[imgNum] = [];
+
+            if (!nameMap) {
+              return;
+            }
+
             for (var i = 1; i <= _this.p3ImagesNum[imgNum]; i++) {
-              _this.p3Images[imgNum].push('./images/1080banyan_' +
-                  (imgNum < 10 ? '0' + (imgNum + 1) : (imgNum + 1)) + '_' + (i < 10 ? '0' + i : i) + '.jpg');
+              _this.p3Images[imgNum].push('./images/' + nameMap + '_' + (i < 10 ? '0' + i : i) + '.jpg');
             }
           });
           row++;
@@ -490,16 +530,15 @@
             if (typeof $ !== 'undefined') {
               $(element).animate({opacity: 1}, ctrl.pageScrollInterval * 1000);
             }
+
             setTimeout(function () {
               var loadingDom = imageContainer.querySelector('.loading');
               if (loadingDom) {
                 loadingDom.style.display = 'none';
               }
-
               element.style.opacity = 1;
               ctrl.bindScaleEvent.call(ctrl, image, element, addScale);
             }, ctrl.pageScrollInterval * 1000);
-
 
             ctrl.domAnimation(element, 'opacity');
           }
