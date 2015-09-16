@@ -430,9 +430,9 @@
         var x = 1, y = 1, z = 1;
 
         if (changeBigger) {
-          x = 1.5;
-          y = 1.5;
-          z = 1.5;
+          x = 1.2;
+          y = 1.2;
+          z = 1.2;
           dom.style.zIndex = 999;
         } else {
           dom.style.zIndex = 'inherit';
