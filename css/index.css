@@ -587,9 +587,6 @@ html {
   width: 3.3rem;
   height: 1.1rem;
 }
-.diext-p header .active {
-  color: #000;
-}
 .diext-p header .deleteIcon {
   cursor: pointer;
   position: absolute;
@@ -697,17 +694,16 @@ html {
   z-index: 755;
 }
 .diext-p caption.p2 .img {
-  overflow: hidden;
-}
-.diext-p caption.p2 .row {
   background-color: #000;
+  overflow: hidden;
 }
 .diext-p caption.p2 .row img {
   opacity: 0;
   cursor: pointer;
 }
 .diext-p caption.p2 .img {
-  display: inline-table;
+  display: block;
+  float: left;
   width: 33.3333%;
   height: auto;
   position: relative;
@@ -749,7 +745,8 @@ html {
   margin: 0 auto;
 }
 .diext-p .img-detail .img {
-  display: inline-table;
+  display: block;
+  float: left;
   width: 100%;
   height: auto;
   position: relative;

@@ -51,7 +51,7 @@
         scale = Number(img.getAttribute('scale'));
 
       if (images.length === imgContainers.length) {
-        img.style.height = ((((clientWidth * scale) * initialHeight) / initialWidth).toFixed(2) - 4) + 'px';
+        img.style.height = (((clientWidth * scale) * initialHeight) / initialWidth).toFixed(2) + 'px';
       }
     });
   }

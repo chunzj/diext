@@ -43,7 +43,8 @@ html {
 
 @mixin imgLazy($width) {
   .img {
-    display: inline-table;
+    display: block;
+    float: left;
     width: $width;
     height: auto;
     position: relative;
@@ -128,10 +129,6 @@ html {
     .scrollDown {
       @include arrowStyle(26%, bottom);
       margin-top: -0.55rem;
-    }
-
-    .active {
-      color: #000;
     }
 
     .deleteIcon {
@@ -219,11 +216,11 @@ html {
     z-index: 755;
 
     .img {
+      background-color: #000;
       overflow: hidden;
     }
 
     .row {
-      background-color: #000;
       img {
         opacity: 0;
         cursor: pointer;

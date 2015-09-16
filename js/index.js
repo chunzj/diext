@@ -10,8 +10,8 @@
     ],
     [
       './images/sample_5.jpg',
-      '',
-      './images/sample_4.jpg'
+      './images/sample_4.jpg',
+      ''
     ]
   ];
 
@@ -71,6 +71,7 @@
       os: null,
       scrollDone: true,
       worksLinkActive: false,
+      aboutLinkActive: false,
       seeImgDetail: false,
       imgDetailDone: false,
       showDeleteIcon: false,
@@ -97,6 +98,10 @@
       bindResizeEvent: function (){
         var _this = this, resizeTimer = false;
         tool.addEvent(window, 'resize', function (evt){
+          if (tool.isPhone()) {
+            return;
+          }
+
           var header = null;
           if (!header) {
             header = document.querySelector('.diext header');
@@ -151,6 +156,9 @@
       bindScrollEvent: function (){
         var _this = this;
         tool.registerMouseScrollEvent(function (evt, direction){
+          if (tool.isPhone()) {
+            return;
+          }
           var curCaptionScrollTop = document.querySelectorAll('caption')[_this.currentPage - 1].scrollTop;
           if (curCaptionScrollTop === 0) {
             if (direction > 0) {
@@ -199,6 +207,10 @@
       deleteImageDetail: function (){
         this.preImgControl();
         this.paramControl(false);
+        this.aboutLinkActive = false;
+        this.showDeleteIcon = false;
+        this.showLinkIcon = false;
+        m.redraw(true);
       },
 
       linkToOther: function (){
@@ -219,6 +231,7 @@
           return;
         }
 
+        this.worksLinkActive = true;
         this.scrollPage('down');
       },
 
@@ -360,12 +373,14 @@
           return;
         }
 
+        this.aboutLinkActive = true;
         var _this = this;
         this.preImgControl(imgIdx);
         m.sync(this.lazyLoadImages('.img-detail', true)).then(function (){
             _this.imgDetailDone = true;
         });
         this.paramControl(true);
+        m.redraw(true);
       },
       paramControl: function (showDetail){
         var imgDetail = document.querySelector('.diext .img-detail'), _this = this;
@@ -409,7 +424,7 @@
           return;
         }
 
-        var x = 1, y = 1, z = 1;
+        var x = 1.01, y = 1, z = 1;
 
         if (changeBigger) {
           x = 1.2;
@@ -426,7 +441,24 @@
         dom.style['-o-transform'] = "scale(" + x + "," + y + ")";
 
         this.domAnimation(dom, 1.5);
-      }
+      },
+      bindScaleEvent: function (image, dom, addScale) {
+
+        if (dom.bindEvent) {
+          return;
+        }
+
+        var _this = this;
+        dom.bindEvent = true;
+
+        dom.onmouseover = function (){
+          _this.imageScale.call(_this, this, true, !!image, addScale);
+        };
+
+        dom.onmouseout = function (){
+          _this.imageScale.call(_this, this, false, !!image, addScale);
+        }
+      },
     },
     controller: function (){
 
@@ -450,30 +482,30 @@
       }
 
       attrs.config = function (element){
+        var imageContainer = element.parentNode;
         if (!showLoading) {
           if (ctrl.currentPage === 2) {
             if (typeof $ !== 'undefined') {
               $(element).animate({opacity: 1}, ctrl.pageScrollInterval * 1000);
-            } else {
-              element.style.opacity = 1;
             }
-            ctrl.domAnimation(element);
+            setTimeout(function () {
+              var loadingDom = imageContainer.querySelector('.loading');
+              if (loadingDom) {
+                loadingDom.style.display = 'none';
+              }
+
+              element.style.opacity = 1;
+              ctrl.bindScaleEvent.call(ctrl, image, element, addScale);
+            }, ctrl.pageScrollInterval * 1000);
+
+
+            ctrl.domAnimation(element, 'opacity');
           }
         }
       }
 
-      if (!tool.isPhone()) {
-        attrs.onmouseover = function (){
-          ctrl.imageScale.call(ctrl, this, true, !!image, addScale);
-        };
-
-        attrs.onmouseout = function (){
-          ctrl.imageScale.call(ctrl, this, false, !!image, addScale);
-        }
-      }
-
       return m('div.img' + (showLoading ? '.default' : ''), imgAttrs, [
-        showLoading ? m('span.loading', 'Loading') : '',
+        m('span.loading', 'Loading'),
         m('img', attrs)
       ]);
     },
@@ -499,7 +531,7 @@
                 ctrl.nextPage.call(ctrl);
               }
             }, 'WORKS'),
-            m('a', 'ABOUT')
+            m('a' + (ctrl.aboutLinkActive ? '.active' : ''), 'ABOUT')
           ])),
           ctrl.showArrowDown ? m('div.scrollDown', {
             onclick: ctrl.previousPage.bind(ctrl)
@@ -580,6 +612,7 @@
 
             lazyImg.onload = function (){
               IMG_CACHE[imgUrl] = true;
+              imgContainer.querySelector('.loading').style.display = 'none';
               m.redraw();
               console.log(imgUrl + 'loaded');
             };
