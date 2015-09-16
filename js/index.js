@@ -2,24 +2,48 @@
  * Created by chunzj on 2015/9/9.
  */
 (function () {
+  var THUMB_IMAGES = [
+    [
+      './images/sample_1.jpg',
+      './images/sample_2.jpg',
+      './images/sample_3.jpg'
+    ],
+    [
+      './images/sample_4.jpg',
+      './images/sample_5.jpg',
+      ''
+    ],
+    [
+      './images/sample_4.jpg',
+      '',
+      ''
+    ],
+    [
+      '',
+      '',
+      './images/sample_4.jpg'
+    ]
+  ];
+
+  var IMG_CACHE = {
+    './images/sample_1.jpg': true,
+    './images/sample_2.jpg': false,
+    './images/sample_3.jpg': false,
+    './images/sample_4.jpg': false,
+    './images/sample_5.jpg': false,
+    './images/1080banyan_01_01.jpg': false,
+    './images/1080banyan_01_02.jpg': false,
+    './images/1080banyan_01_03.jpg': false,
+    './images/1080banyan_01_04.jpg': false,
+    './images/1080banyan_01_05.jpg': false,
+    './images/1080banyan_01_06.jpg': false,
+    './images/1080banyan_01_07.jpg': false
+  };
+
   var diextPcPage = {
     initialized: false,
 
     viewModel: {
-      imageLoaded: {
-        './images/sample_1.jpg': false,
-        './images/sample_2.jpg': false,
-        './images/sample_3.jpg': false,
-        './images/sample_4.jpg': false,
-        './images/sample_5.jpg': false,
-        './images/1080banyan_01_01.jpg': false,
-        './images/1080banyan_01_02.jpg': false,
-        './images/1080banyan_01_03.jpg': false,
-        './images/1080banyan_01_04.jpg': false,
-        './images/1080banyan_01_05.jpg': false,
-        './images/1080banyan_01_06.jpg': false,
-        './images/1080banyan_01_07.jpg': false
-      },
       sizeImages: {
         './images/1080banyan_01_01.jpg': {
           height: '342'
@@ -43,28 +67,7 @@
           height: '1447'
         }
       },
-      p2Images: [
-        [
-          './images/sample_1.jpg',
-          './images/sample_2.jpg',
-          './images/sample_3.jpg'
-        ],
-        [
-          './images/sample_4.jpg',
-          './images/sample_5.jpg',
-          ''
-        ],
-        [
-          './images/sample_4.jpg',
-          '',
-          ''
-        ],
-        [
-          '',
-          '',
-          './images/sample_4.jpg'
-        ]
-      ],
+      p2Images: THUMB_IMAGES,
 
       p3Images: [],
       p3ImagesNum: [7],
@@ -86,10 +89,12 @@
 
       init: function () {
         this.initImgResource();
-        this.changeArrow();
         this.detectBrowser();
-        this.bindScrollEvent();
-        this.bindResizeEvent();
+        if (!tool.isPhone()) {
+          this.changeArrow();
+          this.bindScrollEvent();
+          this.bindResizeEvent();
+        }
       },
 
       showCaptions: function (isShow) {
@@ -320,7 +325,7 @@
           [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom) {
 
             var imgUrl = imgDom.getAttribute('data-url'),
-              loaded = _this.imageLoaded[imgUrl];
+              loaded = IMG_CACHE[imgUrl];
 
             deferrs.push(deferred.promise);
 
@@ -342,7 +347,7 @@
         img.src = imgUrl;
         img.onload = function () {
 
-          _this.imageLoaded[imgUrl] = true;
+          IMG_CACHE[imgUrl] = true;
           if (redraw) {
             setTimeout(m.redraw, _this.pageScrollInterval * 1000);
           }
@@ -452,7 +457,7 @@
     imageView: function (ctrl, image, isServer, imgAttrs, addScale) {
       var attrs = {}, showLoading = false;
       if (image) {
-        if (isServer && !ctrl.imageLoaded[image]) {
+        if (isServer && !IMG_CACHE[image]) {
           showLoading = true;
           attrs['data-url'] = image;
         } else {
@@ -580,28 +585,86 @@
   };
 
   var diextMobilePage = {
-    viewModel: {
+    isInitialized: false,
+    init: function () {
+      var lazyingImgs = {}, lazyImg = null;
+      tool.addEvent(window, 'scroll', function () {
+        var docScrollTop = document.querySelector('body').scrollTop, innerHeight = window.innerHeight;
+        var lazyImgsDom = document.querySelectorAll('.diext-m img[data-url]');
+        [].slice.call(lazyImgsDom, 0, lazyImgsDom.length).forEach(function(imgDom, idx) {
+          var imgUrl = imgDom.getAttribute('data-url');
+          if (lazyingImgs[imgUrl] || IMG_CACHE[imgUrl]) {
+              return;
+          }
 
+          var imgContainer = imgDom.parentNode, containerTop = imgContainer.offsetTop;
+          if (docScrollTop + innerHeight > containerTop + 50) {
+            lazyingImgs[imgUrl] = true;
+
+            lazyImg = new Image();
+            lazyImg.src = imgUrl;
+
+            lazyImg.onload = function () {
+              IMG_CACHE[imgUrl] = true;
+              m.redraw();
+              console.log(imgUrl + 'loaded');
+            };
+
+            lazyImg.onerror = function () {
+              console.log('Image url(' + imgUrl + ') load error!');
+            };
+          }
+        });
+      });
+    },
+    viewModel: {
+      p2Images: THUMB_IMAGES
     },
     controller: function () {
+
+      if (!diextMobilePage.isInitialized) {
+        diextMobilePage.init();
+      }
+
       return diextMobilePage.viewModel;
     },
-    view: function () {
+    view: function (ctrl) {
       return [
-        m('div#main', [
+        m('div#main.main', [
           m('header', [
             m('div.left', m('span.text', 'DIEXT LAB')),
             m('nav.right', [
-              m('a', 'WORKS'),
+              m('a', {href:'#thumb'}, 'WORKS'),
               m('a', 'ABOUT')
             ]),
             m('di.clear')
           ]),
-          m('div.content', [
-            m('img.frame', {src: './images/bigword.svg'}),
-            m('img.john', {src: './images/lines.svg'}),
-            m('img.lower', {src: './images/smallword.svg'})
-          ])
+          m('div.content', m('div.imgs', [
+            m('img.target', {src: './images/target.png'}),
+            m('img.desc', {src: './images/desc.png'})
+          ]))
+        ]),
+        m('div#thumb.thumb', [
+            m('div.title', 'WORKS'),
+            m('div.content', ctrl.p2Images.map(function(groupImages) {
+              return groupImages.map(function (img) {
+                var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};
+                if (img && IMG_CACHE[img]) {
+                  imgUrl = img;
+                  showLoading = false;
+                }
+
+                attrs.src = imgUrl;
+                if (img && showLoading) {
+                  attrs['data-url'] = img;
+                }
+
+                return m('div.img' + (showLoading ? '.default' : ''), [
+                  showLoading ? m('span.loading', 'Loading') : '',
+                  m('img', attrs)
+                ]);
+              });
+            }))
         ])
       ];
     }
