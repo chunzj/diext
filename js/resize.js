@@ -52,8 +52,6 @@
 
       if (images.length === imgContainers.length) {
         img.style.height = ((((clientWidth * scale) * initialHeight) / initialWidth).toFixed(2) - 4) + 'px';
-        img.style.marginLeft = '-1px';
-        img.querySelector('img').style.visibility = 'hidden';
       }
     });
   }

@@ -700,15 +700,14 @@ html {
   overflow: hidden;
 }
 .diext-p caption.p2 .row {
-  margin-top: -2px;
-  margin-left: -1px;
   background-color: #000;
 }
 .diext-p caption.p2 .row img {
+  opacity: 0;
   cursor: pointer;
 }
 .diext-p caption.p2 .img {
-  display: inline-block;
+  display: inline-table;
   width: 33.3333%;
   height: auto;
   position: relative;
@@ -750,7 +749,7 @@ html {
   margin: 0 auto;
 }
 .diext-p .img-detail .img {
-  display: inline-block;
+  display: inline-table;
   width: 100%;
   height: auto;
   position: relative;

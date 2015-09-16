@@ -43,7 +43,7 @@ html {
 
 @mixin imgLazy($width) {
   .img {
-    display: inline-block;
+    display: inline-table;
     width: $width;
     height: auto;
     position: relative;
@@ -223,11 +223,9 @@ html {
     }
 
     .row {
-      margin-top: -2px;
-      margin-left: -1px;
       background-color: #000;
-      
       img {
+        opacity: 0;
         cursor: pointer;
       }
     }
