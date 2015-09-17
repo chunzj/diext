@@ -300,7 +300,11 @@
         }, this.pageScrollInterval * 1000);
       },
 
-      domAnimation: function (dom, styleName, interval){
+      domAnimation: function (dom, styleName, interval, validateBrowser){
+        if (typeof validateBrowser === 'undefined') {
+          validateBrowser = true;
+        }
+
         if (arguments.length === 2) {
           if (typeof  arguments[1] === 'string') {
             styleName = arguments[1];
@@ -314,7 +318,7 @@
           interval = this.pageScrollInterval;
         }
 
-        if (!this.browser || (this.browser.name === 'IE' && this.browser.version > 9)) {
+        if (!validateBrowser || (!this.browser || (this.browser.name === 'IE' && this.browser.version > 9))) {
           dom.style.transition = styleName + ' ' + interval + 's';
           dom.style['-moz-transition'] = styleName + ' ' + interval + 's';
           dom.style['-webkit-transition'] = styleName + ' ' + interval + 's';
@@ -385,7 +389,7 @@
         m.redraw(true);
       },
       paramControl: function (showDetail){
-        var imgDetail = document.querySelector('.diext .img-detail'), _this = this;
+        var imgDetail = document.querySelector('.diext-p .img-detail'), _this = this;
 
         if (showDetail) {
           imgDetail.style.zIndex = '766';
@@ -606,6 +610,11 @@
     init: function (){
       var lazyingImgs = {}, lazyImg = null;
       tool.addEvent(window, 'scroll', function (){
+
+        if (!diextMobilePage.viewModel.enableScroll) {
+          return;
+        }
+
         var docScrollTop = document.querySelector('body').scrollTop, innerHeight = window.innerHeight;
         var lazyImgsDom = document.querySelectorAll('.diext-m img[data-url]');
         [].slice.call(lazyImgsDom, 0, lazyImgsDom.length).forEach(function (imgDom, idx){
@@ -634,14 +643,59 @@
           }
         });
       });
+
+      tool.addEvent(window, 'resize', function (){
+        if (tool.isPhone()) {
+          var vm = diextMobilePage.viewModel;
+          vm.enableScroll = true;
+          vm.activeWorks = false;
+          vm.activeAbout = false;
+          vm.currentThumb = 0;
+        }
+      });
     },
     viewModel: {
       p2Images: THUMB_IMAGES,
+      currentThumb: 0,
+      enableScroll: true,
+      activeWorks: false,
+      activeAbout: false,
       backToMain: function (){
         location.hash = 'main';
+      },
+      popImageDetail: function (showDetail, thumbIndex) {
+        var imgDetail = document.querySelector('.diext-m .img-detail');
 
-        //var mainDom = document.getElementById('main');
-        //mainDom.style.transition = 'all ease 1s';
+        if (showDetail) {
+          this.activeAbout = true;
+          this.enableScroll = false;
+          this.showDetail(true);
+
+          imgDetail.style.zIndex = '120';
+          imgDetail.style.opacity = 1;
+
+          diextPcPage.viewModel.domAnimation.call(diextPcPage.viewModel, imgDetail, 'opacity');
+          this.adjustDetailHeight();
+        } else {
+          this.activeAbout = false;
+          this.enableScroll = true;
+          this.showDetail(false);
+
+          imgDetail.style.zIndex = '100';
+          imgDetail.style.opacity = 0;
+        }
+
+        this.currentThumb = thumbIndex;
+      },
+      adjustDetailHeight: function () {
+        if (this.currentThumb === 0) {
+          document.querySelector('.diext-m .img-detail').style.height = window.innerHeight + 'px';
+        }
+      },
+      showDetail: function (isShow) {
+        var mainDom = document.getElementById('main'), thumbDom = document.getElementById('thumb');
+        mainDom.style.display = isShow ? 'none' : 'block';
+        thumbDom.style.display = isShow ? 'none' : 'block';
       }
     },
     controller: function (){
@@ -656,10 +710,10 @@
       return [
         m('div#main.main', [
           m('header', [
-            m('div.left', m('span.text', 'DIEXT LAB')),
+            m('div.left.logo', m('span.text', 'DIEXT LAB')),
             m('nav.right', [
               m('a', {href: '#thumb'}, 'WORKS'),
-              m('a', 'ABOUT')
+              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, 0)},'ABOUT')
             ]),
             m('di.clear')
           ]),
@@ -689,6 +743,27 @@
               ]);
             });
           }))
+        ]),
+        m('div.img-detail', [
+          m('header', [
+            m('div.left.logo', m('span.text', 'DIEXT LAB')),
+            m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false, 0)}, m('span.icon')),
+            m('nav.right', [
+              m('a', {href: '#thumb'}, 'WORKS'),
+              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, 0)},'ABOUT')
+            ]),
+            m('di.clear')
+          ]),
+            m('div.content' + (ctrl.currentThumb > 0 ? '.detail' : '.about'), ctrl.currentThumb > 0 ? '' : [
+              m('h3', 'About DIEXT'),
+              m('p.desc', 'DIEXT是一家互联网设计公司，创新与创意是DIEXT设计最核心的竞争力。' +
+                  '同时在用户体验方面积累了多年的经验，为客户打造充满美而惊喜的产品体验与服务。' +
+                  '我们的业务范围以界面为源点，衍生出用户体验设计、UI视觉设计、营销设计等，覆盖在流行的各种平台'),
+              m('p.contact', [
+                m('span', '合作或咨询，请发邮件至  '),
+                m('a', {href: 'mailto:diecxters@foxmail.com'}, m('strong', 'diecxters@foxmail.com'))
+              ])
+            ])
         ])
       ];
     }
