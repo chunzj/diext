@@ -147,7 +147,9 @@ html {
     .scrollDown {
       @include arrowStyle(26%, bottom);
       margin-top: -0.55rem;
-      margin-left: -1.5rem;
+      .icon {
+        margin-left: -1.5rem;
+      }
     }
 
     .active {
@@ -290,7 +292,9 @@ html {
 
     .scrollUp {
       @include arrowStyle(26%, top);
-      margin-left: -1.5rem;
+      .icon {
+        margin-left: -1.5rem;
+      }
     }
   }
 }
