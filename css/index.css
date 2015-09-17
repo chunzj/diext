@@ -515,22 +515,15 @@ html {
 .diext-p header .left {
   position: relative;
   top: 50%;
-  margin-top: -1.25rem;
+  margin-top: -1.5rem;
   margin-left: 1.46%;
-  color: #BFBFBF;
-  font-size: 1.8rem;
   cursor: pointer;
-}
-.diext-p header .logo {
-  background: url("../images/icons.png") no-repeat;
+  background: url("../images/logo.png") no-repeat;
   background-position: left center;
-  background-size: 17.2rem auto;
-  height: 2.5rem;
-  width: 3.0rem;
-  display: inline-block;
+  background-size: 14.8rem auto;
+  height: 3rem;
+  width: 14.8rem;
   margin-right: 1.6rem;
-  vertical-align: -60%;
-  cursor: pointer;
 }
 .diext-p header .right {
   position: relative;
@@ -567,7 +560,7 @@ html {
   margin-left: -1.65rem;
   margin-top: -0.55rem;
   background: url("../images/icons.png") 26% bottom no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: 3.3rem;
   height: 1.1rem;
 }
@@ -591,7 +584,7 @@ html {
   margin-left: -1.3rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") 78% bottom no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: 2.6rem;
   height: 2.6rem;
 }
@@ -613,7 +606,7 @@ html {
   margin-left: -1.3rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") right bottom no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: 2.6rem;
   height: 2.6rem;
 }
@@ -804,7 +797,7 @@ html {
   margin-left: -1.65rem;
   margin-top: -0.55rem;
   background: url("../images/icons.png") 26% top no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: 3.3rem;
   height: 1.1rem;
 }
@@ -818,24 +811,14 @@ html {
   position: relative;
 }
 .diext-m header .logo {
-  color: #c0bfbf;
-  font-size: 1.8rem;
-  position: relative;
-}
-.diext-m header .logo:before {
-  position: absolute;
-  top: 50%;
-  margin-top: -1.25rem;
+  cursor: pointer;
+  margin-top: -0.5rem;
   content: '';
-  display: inline-block;
-  background: url("../images/icons.png") no-repeat;
-  background-position: left center;
-  background-size: 17.2rem auto;
-  height: 2.5rem;
-  width: 3.0rem;
-}
-.diext-m header .logo .text {
-  margin-left: 4.6rem;
+  background: url("../images/logo.png") no-repeat;
+  background-position: left top;
+  background-size: 14.8rem auto;
+  height: 3rem;
+  width: 14.8rem;
 }
 .diext-m header .right {
   font-size: 1.4rem;
@@ -865,7 +848,7 @@ html {
   margin-left: -1.3rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") 78% bottom no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: 2.6rem;
   height: 2.6rem;
   top: 58%;

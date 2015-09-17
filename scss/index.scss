@@ -28,7 +28,7 @@ html {
   margin-left: -$width / 2;
   margin-top: -$height / 2;
   background: url('../images/icons.png') $bgLeft $bgTop no-repeat;
-  background-size: 17.2rem auto;
+  background-size: 17.2rem 2.6rem;
   width: $width;
   height: $height;
 }
@@ -115,23 +115,16 @@ html {
     .left {
       position: relative;
       top: 50%;
-      margin-top: -1.25rem;
+      margin-top: -1.5rem;
       margin-left: 1.46%;
-      color: #BFBFBF;
-      font-size: 1.8rem;
       cursor: pointer;
-    }
 
-    .logo {
-      background: url("../images/icons.png") no-repeat;
+      background: url("../images/logo.png") no-repeat;
       background-position: left center;
-      background-size: 17.2rem auto;
-      height: 2.5rem;
-      width: 3.0rem;
-      display: inline-block;
+      background-size: 14.8rem auto;
+      height: 3rem;
+      width: 14.8rem;
       margin-right: 1.6rem;
-      vertical-align: -60%;
-      cursor: pointer;
     }
 
     .right {
@@ -309,26 +302,14 @@ html {
     line-height: 2.5rem;
     position: relative;
     .logo {
-      color: #c0bfbf;
-      font-size: 1.8rem;
-      position: relative;
-
-      &:before {
-        position: absolute;
-        top: 50%;
-        margin-top: -1.25rem;
-        content: '';
-        display: inline-block;
-        background: url("../images/icons.png") no-repeat;
-        background-position: left center;
-        background-size: 17.2rem auto;
-        height: 2.5rem;
-        width: 3.0rem;
-      }
-
-      .text {
-        margin-left: 4.6rem;
-      }
+      cursor: pointer;
+      margin-top: -0.5rem;
+      content: '';
+      background: url("../images/logo.png") no-repeat;
+      background-position: left top;
+      background-size: 14.8rem auto;
+      height: 3rem;
+      width: 14.8rem;
     }
 
     .right {

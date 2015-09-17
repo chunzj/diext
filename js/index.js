@@ -185,6 +185,7 @@
 
               _this.changeArrow();
               _this.adjustHeaderWidth(header);
+              _this.adjustImgContainerHeight();
               m.redraw();
             }, 100);
           }
@@ -198,6 +199,24 @@
           scrollDefaultWidth = 12;
         }
         header.style.width = ((1 - scrollDefaultWidth / clientWidth).toFixed(4) * 100) + '%';
+      },
+
+      adjustImgContainerHeight: function () {
+        var clientWidth = document.body.clientWidth;
+        var defaultImgs = document.querySelectorAll('.diext-p .default');
+        [].slice.call(defaultImgs, 0, defaultImgs.length).forEach(function (img) {
+          var initialHeight = Number(img.getAttribute('height')),
+            initialWidth = Number(img.getAttribute('width'));
+
+          var rowContainer = img.parentNode,
+            imgContainers = rowContainer.querySelectorAll('.img'),
+            images = rowContainer.querySelectorAll('img'),
+            scale = Number(img.getAttribute('scale'));
+
+          if (images.length === imgContainers.length) {
+            img.style.height = (((clientWidth * scale) * initialHeight) / initialWidth).toFixed(2) + 'px';
+          }
+        });
       },
 
       bindScrollEvent: function (){
@@ -280,6 +299,7 @@
 
         this.worksLinkActive = true;
         this.scrollPage('down');
+        this.adjustImgContainerHeight();
       },
 
       scrollPage: function (direction){
@@ -439,6 +459,8 @@
         var imgDetail = document.querySelector('.diext-p .img-detail');
 
         if (showDetail) {
+          this.adjustImgContainerHeight();
+
           imgDetail.style.zIndex = '766';
           if (typeof $ !== 'undefined') {
             $(imgDetail).animate({opacity: 1}, this.pageScrollInterval * 1000);
@@ -572,10 +594,7 @@
             }
           }
         }, [
-          m('div.left', [
-            m('span.logo', {onclick: ctrl.backToMain.bind(ctrl)}),
-            m('span.txt', {onclick: ctrl.backToMain.bind(ctrl)}, 'DIEXT LAB')
-          ]),
+          m('div.left', {onclick: ctrl.backToMain.bind(ctrl)}),
           m('div.right', m('nav', [
             m('a' + (ctrl.worksLinkActive && ctrl.scrollDone ? '.active' : ''), {
               onclick: function (){
@@ -712,6 +731,7 @@
       backToMain: function (){
         this.activeWorks = false;
         this.lastScrollTop = 0;
+        this.popImageDetail(false, this.currentThumb);
         document.body.scrollTop = 0;
       },
       linkToAbout: function () {
@@ -796,7 +816,7 @@
       return [
         m('div#main.main', [
           m('header', [
-            m('div.left.logo', m('span.text', 'DIEXT LAB')),
+            m('div.left.logo', {onclick: ctrl.backToMain.bind(ctrl)}),
             m('nav.right', [
               m('a' + (ctrl.activeWorks ? '.active' : ''), {href: '#thumb'}, 'WORKS'),
               m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, -1)},'ABOUT')
@@ -838,7 +858,7 @@
         ]),
         m('div.img-detail', [
           m('header', [
-            m('div.left.logo', m('span.text', 'DIEXT LAB')),
+            m('div.left.logo', {onclick: ctrl.backToMain.bind(ctrl)}),
             m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false)}, m('span.icon')),
             m('nav.right', [
               m('a' + (ctrl.activeWorks ? '.active' : ''), {onclick: ctrl.linkToAbout.bind(ctrl)}, 'WORKS'),
