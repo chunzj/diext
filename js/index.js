@@ -397,7 +397,7 @@
         m.redraw(true);
       },
       paramControl: function (showDetail){
-        var imgDetail = document.querySelector('.diext-p .img-detail'), _this = this;
+        var imgDetail = document.querySelector('.diext-p .img-detail');
 
         if (showDetail) {
           imgDetail.style.zIndex = '766';
@@ -407,7 +407,7 @@
             imgDetail.style.opacity = 1;
           }
 
-          this.domAnimation(imgDetail, 'opacity');
+          this.domAnimation(imgDetail);
 
           setTimeout(function (){
             imgDetail.scrollTop = 0;
