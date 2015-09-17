@@ -28,7 +28,6 @@ html {
   margin-left: -$width / 2;
   margin-top: -$height / 2;
   background: url('../images/icons.png') $bgLeft $bgTop no-repeat;
-  background-size: 17.2rem 2.6rem;
   width: $width;
   height: $height;
 }
@@ -121,7 +120,6 @@ html {
 
       background: url("../images/logo.png") no-repeat;
       background-position: left center;
-      background-size: 14.8rem auto;
       height: 3rem;
       width: 14.8rem;
       margin-right: 1.6rem;
@@ -149,6 +147,7 @@ html {
     .scrollDown {
       @include arrowStyle(26%, bottom);
       margin-top: -0.55rem;
+      margin-left: -1.5rem;
     }
 
     .active {
@@ -159,6 +158,7 @@ html {
       @include iconContainer(21.875%, #ff4646, 7.6rem, 7.5rem);
       & .icon {
         @include spriteIcon(78%, bottom, 2.6rem, 2.6rem);
+        margin-left: -1.4rem;
       }
     }
 
@@ -290,6 +290,7 @@ html {
 
     .scrollUp {
       @include arrowStyle(26%, top);
+      margin-left: -1.5rem;
     }
   }
 }
@@ -307,7 +308,6 @@ html {
       content: '';
       background: url("../images/logo.png") no-repeat;
       background-position: left top;
-      background-size: 14.8rem auto;
       height: 3rem;
       width: 14.8rem;
     }
