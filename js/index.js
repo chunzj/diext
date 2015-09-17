@@ -513,7 +513,7 @@
             }, ctrl.pageScrollInterval * 1000);
 
 
-            ctrl.domAnimation(element, 'opacity');
+            ctrl.domAnimation(element);
           }
         }
       }
