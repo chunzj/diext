@@ -499,7 +499,7 @@
           return;
         }
 
-        var x = 1.01, y = 1, z = 1;
+        var x = 1.01, y = 1.01, z = 1.01;
 
         if (changeBigger) {
           x = 1.2;
@@ -545,6 +545,10 @@
 
     imageView: function (ctrl, image, imgAttrs, addScale){
       var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};
+
+      if (!image) {
+        return;
+      }
 
       if (image && IMG_MANAGER.imageCache[image]) {
         imgUrl = image;
@@ -835,6 +839,11 @@
             return groupImages.map(function (img, innerIdx){
               row += innerIdx;
               var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};
+
+              if (!img) {
+                return;
+              }
+
               if (img && IMG_MANAGER.imageCache[img]) {
                 imgUrl = img;
                 showLoading = false;

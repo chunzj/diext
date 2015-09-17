@@ -550,14 +550,13 @@ html {
   height: 5.4rem;
   margin-left: -4.35rem;
   margin-top: -0.55rem;
-  margin-left: -1.5rem;
 }
 .diext-p header .scrollDown .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -1.65rem;
+  margin-left: -1.5rem;
   margin-top: -0.55rem;
   background: url("../images/icons.png") 26% bottom no-repeat;
   width: 3.3rem;
@@ -580,12 +579,11 @@ html {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -1.3rem;
+  margin-left: -1.4rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") 78% bottom no-repeat;
   width: 2.6rem;
   height: 2.6rem;
-  margin-left: -1.4rem;
 }
 .diext-p header .linkIcon {
   cursor: pointer;
@@ -605,6 +603,7 @@ html {
   margin-left: -1.3rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") right bottom no-repeat;
+  background-size: 17.2rem 2.6rem;
   width: 2.6rem;
   height: 2.6rem;
 }
@@ -786,14 +785,13 @@ html {
   width: 8.7rem;
   height: 5.4rem;
   margin-left: -4.35rem;
-  margin-left: -1.5rem;
 }
 .diext-p footer .scrollUp .icon {
   display: inline-block;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -1.65rem;
+  margin-left: -1.5rem;
   margin-top: -0.55rem;
   background: url("../images/icons.png") 26% top no-repeat;
   width: 3.3rem;
@@ -845,6 +843,7 @@ html {
   margin-left: -1.3rem;
   margin-top: -1.3rem;
   background: url("../images/icons.png") 78% bottom no-repeat;
+  background-size: 17.2rem 2.6rem;
   width: 2.6rem;
   height: 2.6rem;
   top: 58%;

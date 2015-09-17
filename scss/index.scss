@@ -120,6 +120,7 @@ html {
 
       background: url("../images/logo.png") no-repeat;
       background-position: left center;
+      background-size: 14.8rem auto;
       height: 3rem;
       width: 14.8rem;
       margin-right: 1.6rem;
@@ -147,7 +148,6 @@ html {
     .scrollDown {
       @include arrowStyle(26%, bottom);
       margin-top: -0.55rem;
-      margin-left: -1.5rem;
     }
 
     .active {
@@ -290,7 +290,6 @@ html {
 
     .scrollUp {
       @include arrowStyle(26%, top);
-      margin-left: -1.5rem;
     }
   }
 }
@@ -308,6 +307,7 @@ html {
       content: '';
       background: url("../images/logo.png") no-repeat;
       background-position: left top;
+      background-size: 14.8rem auto;
       height: 3rem;
       width: 14.8rem;
     }
