@@ -541,8 +541,6 @@ html {
   background: url("../images/icons.png") no-repeat;
   background-position: left center;
   background-size: 17.2rem auto;
-  max-height: 25px;
-  max-width: 30px;
   height: 2.5rem;
   width: 3.0rem;
   display: inline-block;
@@ -600,8 +598,6 @@ html {
   background: #ff4646;
   width: 7.6rem;
   height: 7.5rem;
-  max-width: 76px;
-  max-height: 75px;
 }
 .diext-p header .deleteIcon .icon {
   display: inline-block;
@@ -614,8 +610,6 @@ html {
   background-size: 17.2rem auto;
   width: 2.6rem;
   height: 2.6rem;
-  max-width: 26px;
-  max-height: 26px;
 }
 .diext-p header .linkIcon {
   cursor: pointer;

@@ -126,8 +126,6 @@ html {
       background: url("../images/icons.png") no-repeat;
       background-position: left center;
       background-size: 17.2rem auto;
-      max-height: 25px;
-      max-width: 30px;
       height: 2.5rem;
       width: 3.0rem;
       display: inline-block;
@@ -166,12 +164,8 @@ html {
 
     .deleteIcon {
       @include iconContainer(21.875%, #ff4646, 7.6rem, 7.5rem);
-      max-width: 76px;
-      max-height: 75px;
       & .icon {
         @include spriteIcon(78%, bottom, 2.6rem, 2.6rem);
-        max-width: 26px;
-        max-height: 26px;
       }
     }
 
