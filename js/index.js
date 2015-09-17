@@ -1,7 +1,7 @@
 /**
  * Created by chunzj on 2015/9/9.
  */
-(function (){
+(function () {
   var THUMB_IMAGES = [
     [
       './images/sample_1.jpg',
@@ -30,38 +30,63 @@
     './images/1080banyan_01_07.jpg': false
   };
 
+  var IMAGES_SIZE = {
+    './images/1080banyan_01_01.jpg': {
+      height: '342'
+    },
+    './images/1080banyan_01_02.jpg': {
+      height: '760'
+    },
+    './images/1080banyan_01_03.jpg': {
+      height: '1596'
+    },
+    './images/1080banyan_01_04.jpg': {
+      height: '699'
+    },
+    './images/1080banyan_01_05.jpg': {
+      height: '977'
+    },
+    './images/1080banyan_01_06.jpg': {
+      height: '658'
+    },
+    './images/1080banyan_01_07.jpg': {
+      height: '1447'
+    }
+  };
+
+  var DETAIL_IMAGES = [], DETAIL_IMAGES_NUM = [7];
+
+  function initImgResource (){
+    var row = 0, _this = this;
+    THUMB_IMAGES.forEach(function (subImages, idx){
+      row = idx * subImages.length;
+      subImages.forEach(function (img, index){
+        var imgNum = row + index;
+        DETAIL_IMAGES[imgNum] = [];
+        for (var i = 1; i <= DETAIL_IMAGES_NUM[imgNum]; i++) {
+          DETAIL_IMAGES[imgNum].push('./images/1080banyan_' +
+              (imgNum < 10 ? '0' + (imgNum + 1) : (imgNum + 1)) + '_' + (i < 10 ? '0' + i : i) + '.jpg');
+        }
+      });
+      row++;
+    });
+  }
+
+  initImgResource();
+
+  window.IMG_MANAGER = {
+    detailImages: DETAIL_IMAGES,
+    thumbImages: THUMB_IMAGES,
+    imageCache: IMG_CACHE,
+    imageSize: IMAGES_SIZE
+  };
+})();
+
+(function (){
   var diextPcPage = {
     initialized: false,
 
     viewModel: {
-      sizeImages: {
-        './images/1080banyan_01_01.jpg': {
-          height: '342'
-        },
-        './images/1080banyan_01_02.jpg': {
-          height: '760'
-        },
-        './images/1080banyan_01_03.jpg': {
-          height: '1596'
-        },
-        './images/1080banyan_01_04.jpg': {
-          height: '699'
-        },
-        './images/1080banyan_01_05.jpg': {
-          height: '977'
-        },
-        './images/1080banyan_01_06.jpg': {
-          height: '658'
-        },
-        './images/1080banyan_01_07.jpg': {
-          height: '1447'
-        }
-      },
-      p2Images: THUMB_IMAGES,
-
-      p3Images: [],
-      p3ImagesNum: [7],
-
       showArrowUp: false,
       showArrowDown: false,
       currentPage: 1,
@@ -78,7 +103,6 @@
       currentImg: 0,
 
       init: function (){
-        this.initImgResource();
         this.detectBrowser();
         if (!tool.isPhone()) {
           this.changeArrow();
@@ -135,22 +159,6 @@
           scrollDefaultWidth = 12;
         }
         header.style.width = ((1 - scrollDefaultWidth / clientWidth).toFixed(4) * 100) + '%';
-      },
-
-      initImgResource: function (){
-        var row = 0, _this = this;
-        this.p2Images.forEach(function (subImages, idx){
-          row = idx * subImages.length;
-          subImages.forEach(function (img, index){
-            var imgNum = row + index;
-            _this.p3Images[imgNum] = [];
-            for (var i = 1; i <= _this.p3ImagesNum[imgNum]; i++) {
-              _this.p3Images[imgNum].push('./images/1080banyan_' +
-                  (imgNum < 10 ? '0' + (imgNum + 1) : (imgNum + 1)) + '_' + (i < 10 ? '0' + i : i) + '.jpg');
-            }
-          });
-          row++;
-        });
       },
 
       bindScrollEvent: function (){
@@ -333,7 +341,7 @@
           [].slice.call(lazyLoadImgs, 0, lazyLoadImgs.length).forEach(function (imgDom){
 
             var imgUrl = imgDom.getAttribute('data-url'),
-                loaded = IMG_CACHE[imgUrl];
+                loaded = IMG_MANAGER.imageCache[imgUrl];
 
             deferrs.push(deferred.promise);
 
@@ -355,7 +363,7 @@
         img.src = imgUrl;
         img.onload = function (){
 
-          IMG_CACHE[imgUrl] = true;
+          IMG_MANAGER.imageCache[imgUrl] = true;
           if (redraw) {
             setTimeout(m.redraw, _this.pageScrollInterval * 1000);
           }
@@ -477,7 +485,7 @@
     imageView: function (ctrl, image, imgAttrs, addScale){
       var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};
 
-      if (image && IMG_CACHE[image]) {
+      if (image && IMG_MANAGER.imageCache[image]) {
         imgUrl = image;
         showLoading = false;
       }
@@ -568,7 +576,7 @@
           m('img.john', {src: './images/lines.svg'}),
           m('img.lower', {src: './images/smallword.svg'})
         ]))),
-        m('caption.p2', ctrl.p2Images.map(function (imageRow, outerIndex){
+        m('caption.p2', IMG_MANAGER.thumbImages.map(function (imageRow, outerIndex){
           return m('div.row', imageRow.map(function (image, idx){
             return diextPcPage.imageView(ctrl, image, {
               onclick: ctrl.popImageDetail.bind(ctrl, (outerIndex * imageRow.length) + idx, !!image, true),
@@ -579,10 +587,10 @@
           }));
         })),
         m('div.img-detail',
-          !ctrl.aboutLinkActive ? m('div.main', ctrl.p3Images[ctrl.currentImg].map(function (image){
+          !ctrl.aboutLinkActive ? m('div.main', IMG_MANAGER.detailImages[ctrl.currentImg].map(function (image){
             return diextPcPage.imageView(ctrl, image, {
-              height: ctrl.sizeImages[image].height,
-              width: ctrl.sizeImages[image].width || '1080',
+              height: IMG_MANAGER.imageSize[image].height,
+              width: IMG_MANAGER.imageSize[image].width || '1080',
               scale: '0.5'
             }, false);
           })) : m('div.main.about', [
@@ -608,7 +616,7 @@
   var diextMobilePage = {
     isInitialized: false,
     init: function (){
-      var lazyingImgs = {}, lazyImg = null;
+      var lazyingImgs = {}, lazyImg = null, vm = diextMobilePage.viewModel;
       tool.addEvent(window, 'scroll', function (){
 
         if (!diextMobilePage.viewModel.enableScroll) {
@@ -616,10 +624,15 @@
         }
 
         var docScrollTop = document.querySelector('body').scrollTop, innerHeight = window.innerHeight;
+        if (docScrollTop < 100 && vm.activeWorks) {
+          vm.activeWorks = false;
+          m.redraw();
+        }
+
         var lazyImgsDom = document.querySelectorAll('.diext-m img[data-url]');
         [].slice.call(lazyImgsDom, 0, lazyImgsDom.length).forEach(function (imgDom, idx){
           var imgUrl = imgDom.getAttribute('data-url');
-          if (lazyingImgs[imgUrl] || IMG_CACHE[imgUrl]) {
+          if (lazyingImgs[imgUrl] || IMG_MANAGER.imageCache[imgUrl]) {
             return;
           }
 
@@ -631,10 +644,9 @@
             lazyImg.src = imgUrl;
 
             lazyImg.onload = function (){
-              IMG_CACHE[imgUrl] = true;
+              IMG_MANAGER.imageCache[imgUrl] = true;
               imgContainer.querySelector('.loading').style.display = 'none';
               m.redraw();
-              console.log(imgUrl + 'loaded');
             };
 
             lazyImg.onerror = function (){
@@ -646,7 +658,6 @@
 
       tool.addEvent(window, 'resize', function (){
         if (tool.isPhone()) {
-          var vm = diextMobilePage.viewModel;
           vm.enableScroll = true;
           vm.activeWorks = false;
           vm.activeAbout = false;
@@ -655,51 +666,75 @@
       });
     },
     viewModel: {
-      p2Images: THUMB_IMAGES,
       currentThumb: -1,
       enableScroll: true,
       activeWorks: false,
       activeAbout: false,
+      lastScrollTop: 0,
       backToMain: function (){
         this.activeWorks = false;
-        location.hash = 'main';
+        this.lastScrollTop = 0;
+        document.body.scrollTop = 0;
       },
       linkToAbout: function () {
         this.activeWorks = true;
 
         if (this.activeAbout) {
-          this.activeAbout = false;
           this.popImageDetail(false, -1);
         }
-        location.hash = '#thumb';
+
+        this.lastScrollTop = document.getElementById('thumb').offsetTop;
       },
       popImageDetail: function (showDetail, thumbIndex) {
         var imgDetail = document.querySelector('.diext-m .img-detail');
 
         if (showDetail) {
-          this.activeAbout = true;
-          this.enableScroll = false;
+
+          this.currentThumb = thumbIndex;
+
+          this.lastScrollTop = document.body.scrollTop;
+          document.body.scrollTop = 0;
+
+          if (thumbIndex === -1) {
+            this.activeAbout = true;
+            this.enableScroll = false;
+          } else {
+            m.redraw(true);
+          }
           this.showDetail(true);
 
           imgDetail.style.zIndex = '120';
           imgDetail.style.opacity = 1;
 
-          diextPcPage.viewModel.domAnimation.call(diextPcPage.viewModel, imgDetail, 'opacity');
+          diextPcPage.viewModel.domAnimation.call(diextPcPage.viewModel, imgDetail);
           this.adjustDetailHeight();
         } else {
+          this.showDetail(false);
           this.activeAbout = false;
           this.enableScroll = true;
-          this.showDetail(false);
 
-          imgDetail.style.zIndex = '100';
           imgDetail.style.opacity = 0;
-        }
+          imgDetail.style.zIndex = '100';
 
-        this.currentThumb = thumbIndex;
+          var _this = this;
+          setTimeout(function() {
+            document.body.scrollTop = _this.lastScrollTop;
+          }, diextPcPage.viewModel.pageScrollInterval * 10);
+        }
       },
       adjustDetailHeight: function () {
-        if (this.currentThumb === -1) {
+        if (this.currentThumb === -1 || IMG_MANAGER.detailImages[this.currentThumb].length === 0) {
           document.querySelector('.diext-m .img-detail').style.height = window.innerHeight + 'px';
+        } else {
+          var defaultImgDoms = document.querySelectorAll('.diext-m .img-detail .default');
+          if (defaultImgDoms.length) {
+            [].slice.call(defaultImgDoms, 0, defaultImgDoms.length).forEach(function(imgDom) {
+              var imgUrl = imgDom.querySelector('img').getAttribute('data-url');
+              if (imgUrl && !IMG_MANAGER.imageCache[imgUrl]) {
+                imgDom.style.height = imgDom.getAttribute('height') + 'px';
+              }
+            });
+          }
         }
       },
       showDetail: function (isShow) {
@@ -717,6 +752,7 @@
       return diextMobilePage.viewModel;
     },
     view: function (ctrl){
+      var row = 0;
       return [
         m('div#main.main', [
           m('header', [
@@ -734,10 +770,12 @@
         ]),
         m('div#thumb.thumb', [
           m('div.title', {onclick: ctrl.backToMain.bind(ctrl)}, 'WORKS'),
-          m('div.content', ctrl.p2Images.map(function (groupImages){
-            return groupImages.map(function (img){
+          m('div.content', IMG_MANAGER.thumbImages.map(function (groupImages, outerIdx){
+            row = outerIdx * groupImages.length;
+            return groupImages.map(function (img, innerIdx){
+              row += innerIdx;
               var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {};
-              if (img && IMG_CACHE[img]) {
+              if (img && IMG_MANAGER.imageCache[img]) {
                 imgUrl = img;
                 showLoading = false;
               }
@@ -745,6 +783,10 @@
               attrs.src = imgUrl;
               if (img && showLoading) {
                 attrs['data-url'] = img;
+              }
+
+              if (!showLoading) {
+                attrs.onclick = ctrl.popImageDetail.bind(ctrl, true, row);
               }
 
               return m('div.img' + (showLoading ? '.default' : ''), [
@@ -757,23 +799,45 @@
         m('div.img-detail', [
           m('header', [
             m('div.left.logo', m('span.text', 'DIEXT LAB')),
-            m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false, -1)}, m('span.icon')),
+            m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false)}, m('span.icon')),
             m('nav.right', [
               m('a' + (ctrl.activeWorks ? '.active' : ''), {onclick: ctrl.linkToAbout.bind(ctrl)}, 'WORKS'),
               m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, -1)},'ABOUT')
             ]),
             m('di.clear')
           ]),
-            m('div.content' + (ctrl.currentThumb !== -1 ? '.detail' : '.about'), ctrl.currentThumb !== -1 ? '' : [
-              m('h3', 'About DIEXT'),
-              m('p.desc', 'DIEXT是一家互联网设计公司，创新与创意是DIEXT设计最核心的竞争力。' +
-                  '同时在用户体验方面积累了多年的经验，为客户打造充满美而惊喜的产品体验与服务。' +
-                  '我们的业务范围以界面为源点，衍生出用户体验设计、UI视觉设计、营销设计等，覆盖在流行的各种平台'),
-              m('p.contact', [
-                m('span', '合作或咨询，请发邮件至  '),
-                m('a', {href: 'mailto:diecxters@foxmail.com'}, m('strong', 'diecxters@foxmail.com'))
+          m('div.content' + (ctrl.currentThumb !== -1 ? '.detail' : '.about'), ctrl.currentThumb !== -1 ?
+              IMG_MANAGER.detailImages[ctrl.currentThumb].map(function (img){
+                var imgUrl = './images/balckline.jpg', showLoading = true, attrs = {}, outerImgAttrs = {};
+                if (img && IMG_MANAGER.imageCache[img]) {
+                  imgUrl = img;
+                  showLoading = false;
+                }
+
+                attrs.src = imgUrl;
+                if (img && showLoading) {
+                  attrs['data-url'] = img;
+                }
+
+                if (IMG_MANAGER.imageSize[img]) {
+                  outerImgAttrs.height =  IMG_MANAGER.imageSize[img].height;
+                }
+
+                return m('div.img' + (showLoading ? '.default' : ''), outerImgAttrs, [
+                  showLoading ? m('span.loading', 'Loading') : '',
+                  m('img', attrs)
+                ]);
+              }) :
+              [
+                m('h3', 'About DIEXT'),
+                m('p.desc', 'DIEXT是一家互联网设计公司，创新与创意是DIEXT设计最核心的竞争力。' +
+                    '同时在用户体验方面积累了多年的经验，为客户打造充满美而惊喜的产品体验与服务。' +
+                    '我们的业务范围以界面为源点，衍生出用户体验设计、UI视觉设计、营销设计等，覆盖在流行的各种平台'),
+                m('p.contact', [
+                  m('span', '合作或咨询，请发邮件至  '),
+                  m('a', {href: 'mailto:diecxters@foxmail.com'}, m('strong', 'diecxters@foxmail.com'))
+                ])
               ])
-            ])
         ])
       ];
     }
