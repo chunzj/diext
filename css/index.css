@@ -809,16 +809,20 @@ html {
   height: 1.1rem;
 }
 
-.diext-m .main header {
-  padding: 3rem 4.8rem 0 2.8rem;
-  line-height: 2.5rem;
+.diext-m {
+  position: relative;
 }
-.diext-m .main header .left {
+.diext-m header {
+  padding: 2.5rem 4.8rem 0 2.8rem;
+  line-height: 2.5rem;
+  position: relative;
+}
+.diext-m header .logo {
   color: #c0bfbf;
   font-size: 1.8rem;
   position: relative;
 }
-.diext-m .main header .left:before {
+.diext-m header .logo:before {
   position: absolute;
   top: 50%;
   margin-top: -1.25rem;
@@ -830,18 +834,48 @@ html {
   height: 2.5rem;
   width: 3.0rem;
 }
-.diext-m .main header .left .text {
+.diext-m header .logo .text {
   margin-left: 4.6rem;
 }
-.diext-m .main header .right {
+.diext-m header .right {
   font-size: 1.4rem;
 }
-.diext-m .main header .right a:not(:first-child) {
+.diext-m header .right a:not(:first-child) {
   margin-left: 6.8rem;
 }
-.diext-m .main header a {
+.diext-m header a {
   color: #c0bfbf;
   cursor: pointer;
+}
+.diext-m header .delete-icon {
+  margin-left: 2.4rem;
+  width: 7.6rem;
+  height: 7.6rem;
+  background: #ff4646;
+  margin-top: -3.8rem;
+  position: relative;
+  padding-bottom: 0.8rem;
+  cursor: pointer;
+}
+.diext-m header .delete-icon .icon {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -1.3rem;
+  margin-top: -1.3rem;
+  background: url("../images/icons.png") 78% bottom no-repeat;
+  background-size: 17.2rem auto;
+  width: 2.6rem;
+  height: 2.6rem;
+  top: 58%;
+}
+.diext-m header .active {
+  color: #000;
+}
+.diext-m .main {
+  position: relative;
+  z-index: 110;
 }
 .diext-m .main .content .imgs {
   text-align: center;
@@ -858,6 +892,8 @@ html {
   width: 81.875%;
 }
 .diext-m .thumb {
+  position: relative;
+  z-index: 110;
   margin-top: 29.4rem;
 }
 .diext-m .thumb .img {
@@ -890,6 +926,7 @@ html {
   height: 43.8rem;
 }
 .diext-m .thumb .title {
+  cursor: pointer;
   padding-top: 2.4rem;
   text-align: center;
   font-size: 1.8rem;
@@ -897,4 +934,66 @@ html {
 }
 .diext-m .thumb .content {
   margin-top: 2.4rem;
+}
+.diext-m .img-detail {
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 100;
+}
+.diext-m .img-detail .content {
+  background-color: #000;
+  height: 100%;
+}
+.diext-m .img-detail .content.about {
+  padding: 8.8rem 3.8rem 0 3.2rem;
+  color: #fff;
+}
+.diext-m .img-detail .content.about h3 {
+  margin-top: 8.8rem;
+  font-size: 6rem;
+}
+.diext-m .img-detail .content.about .desc {
+  margin-top: 7.8rem;
+  line-height: 2.8rem;
+  font-size: 1.6rem;
+}
+.diext-m .img-detail .content.about .contact {
+  margin-top: 4rem;
+  font-size: 1.6rem;
+}
+.diext-m .img-detail .content.about strong {
+  color: #ff4646;
+}
+.diext-m .img-detail .content.about a:hover {
+  text-decoration: underline;
+}
+.diext-m .img-detail .content.detail {
+  width: 100%;
+}
+.diext-m .img-detail .content.detail img {
+  width: 100%;
+  height: 100%;
+}
+.diext-m .img-detail .content.detail .img {
+  position: relative;
+}
+.diext-m .img-detail .content.detail .img .loading {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: url("../images/loading.gif") center top no-repeat;
+  background-size: 35px 35px;
+  margin-top: -37.5px;
+  margin-left: -37.5px;
+  min-width: 75px;
+  min-height: 75px;
+  z-index: 222;
+  font-size: 1.2rem;
+  color: #7f7e7e;
+  padding-top: 40px;
+  text-align: center;
 }
