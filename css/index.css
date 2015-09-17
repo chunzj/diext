@@ -562,6 +562,9 @@ html {
   width: 3.3rem;
   height: 1.1rem;
 }
+.diext-p header .scrollDown .icon {
+  margin-left: -1.5rem;
+}
 .diext-p header .active {
   color: #000;
 }
@@ -796,6 +799,9 @@ html {
   background: url("../images/icons.png") 26% top no-repeat;
   width: 3.3rem;
   height: 1.1rem;
+}
+.diext-p footer .scrollUp .icon {
+  margin-left: -1.5rem;
 }
 
 .diext-m {
