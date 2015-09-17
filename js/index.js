@@ -706,7 +706,14 @@
 
             lazyImg.onload = function (){
               IMG_MANAGER.imageCache[imgUrl] = true;
-              imgContainer.querySelector('.loading').style.display = 'none';
+              var loadingDom = imgContainer.querySelector('.loading');
+              if (loadingDom) {
+                loadingDom.style.display = 'none';
+              }
+              var imgSizeObj = IMG_MANAGER.imageSize[imgUrl];
+              if (imgSizeObj) {
+                imgContainer.style.height = ( window.innerWidth * imgSizeObj.height / 1080).toFixed(2) + 'px';
+              }
               m.redraw();
             };
 
