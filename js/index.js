@@ -650,18 +650,28 @@
           vm.enableScroll = true;
           vm.activeWorks = false;
           vm.activeAbout = false;
-          vm.currentThumb = 0;
+          vm.currentThumb = -1;
         }
       });
     },
     viewModel: {
       p2Images: THUMB_IMAGES,
-      currentThumb: 0,
+      currentThumb: -1,
       enableScroll: true,
       activeWorks: false,
       activeAbout: false,
       backToMain: function (){
+        this.activeWorks = false;
         location.hash = 'main';
+      },
+      linkToAbout: function () {
+        this.activeWorks = true;
+
+        if (this.activeAbout) {
+          this.activeAbout = false;
+          this.popImageDetail(false, -1);
+        }
+        location.hash = '#thumb';
       },
       popImageDetail: function (showDetail, thumbIndex) {
         var imgDetail = document.querySelector('.diext-m .img-detail');
@@ -688,7 +698,7 @@
         this.currentThumb = thumbIndex;
       },
       adjustDetailHeight: function () {
-        if (this.currentThumb === 0) {
+        if (this.currentThumb === -1) {
           document.querySelector('.diext-m .img-detail').style.height = window.innerHeight + 'px';
         }
       },
@@ -712,8 +722,8 @@
           m('header', [
             m('div.left.logo', m('span.text', 'DIEXT LAB')),
             m('nav.right', [
-              m('a', {href: '#thumb'}, 'WORKS'),
-              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, 0)},'ABOUT')
+              m('a' + (ctrl.activeWorks ? '.active' : ''), {href: '#thumb'}, 'WORKS'),
+              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, -1)},'ABOUT')
             ]),
             m('di.clear')
           ]),
@@ -747,14 +757,14 @@
         m('div.img-detail', [
           m('header', [
             m('div.left.logo', m('span.text', 'DIEXT LAB')),
-            m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false, 0)}, m('span.icon')),
+            m('div.left.delete-icon', {onclick: ctrl.popImageDetail.bind(ctrl, false, -1)}, m('span.icon')),
             m('nav.right', [
-              m('a', {href: '#thumb'}, 'WORKS'),
-              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, 0)},'ABOUT')
+              m('a' + (ctrl.activeWorks ? '.active' : ''), {onclick: ctrl.linkToAbout.bind(ctrl)}, 'WORKS'),
+              m('a' + (ctrl.activeAbout ? '.active' : ''), {onclick: ctrl.popImageDetail.bind(ctrl, true, -1)},'ABOUT')
             ]),
             m('di.clear')
           ]),
-            m('div.content' + (ctrl.currentThumb > 0 ? '.detail' : '.about'), ctrl.currentThumb > 0 ? '' : [
+            m('div.content' + (ctrl.currentThumb !== -1 ? '.detail' : '.about'), ctrl.currentThumb !== -1 ? '' : [
               m('h3', 'About DIEXT'),
               m('p.desc', 'DIEXT是一家互联网设计公司，创新与创意是DIEXT设计最核心的竞争力。' +
                   '同时在用户体验方面积累了多年的经验，为客户打造充满美而惊喜的产品体验与服务。' +
