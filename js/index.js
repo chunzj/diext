@@ -725,7 +725,7 @@
       });
 
       tool.addEvent(window, 'resize', function (){
-        if (tool.isPhone()) {
+        if (!tool.isMobile() && tool.isPhone()) {
           vm.enableScroll = true;
           vm.activeWorks = false;
           vm.activeAbout = false;
@@ -934,6 +934,8 @@
 
   loadPage();
   tool.addEvent(window, 'resize', function (){
-    loadPage();
+    if (tool.isMobile()) {
+      loadPage();
+    }
   });
 })();

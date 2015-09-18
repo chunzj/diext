@@ -44,8 +44,10 @@
         },
         isPhone: function () {
             return this._isPhone || window.innerWidth <= switchPhoneMaxWidth;
+        },
+        isMobile: function() {
+            return this._isPhone;
         }
-
     };
 
     tool.checkPlatform();
