@@ -2,6 +2,7 @@
  * Created by chunzj on 2015/9/9.
  */
 (function () {
+  //config:配置缩略图
   var THUMB_IMAGES = [
     [
       './images/sample_1.jpg',
@@ -11,10 +12,11 @@
     [
       './images/sample_4.jpg',
       './images/sample_5.jpg',
-      ''
+      '' //没有就要配置为空字符串，且必须
     ]
   ];
 
+  //config:配置缩略图和详情页的名称映射
   var THUMB_DETAIL_MAP = {
     './images/sample_1.jpg': '',
     './images/sample_2.jpg': 'guogan',
@@ -23,6 +25,7 @@
     './images/sample_5.jpg': 'banyan'
   };
 
+  //config:配置图片的缓存，包括缩略图和详情页图
   var IMG_CACHE = {
     './images/sample_1.jpg': false,
     './images/sample_2.jpg': false,
@@ -44,6 +47,7 @@
     './images/guogan_06.jpg': false
   };
 
+  //config:配置详情页图片的高度
   var IMAGES_SIZE = {
     './images/banyan_01.jpg': {
       height: '342'
@@ -86,7 +90,7 @@
     }
   };
 
-  var DETAIL_IMAGES = [], DETAIL_IMAGES_NUM = [0, 6, 0, 0, 7];
+  var DETAIL_IMAGES = [], DETAIL_IMAGES_NUM = [0, 6, 0, 0, 7]; //config:配置缩略图对应的详情页图片的数量
 
   function initImgResource (){
     var row = 0, _this = this;
