@@ -934,7 +934,7 @@
 
   loadPage();
   tool.addEvent(window, 'resize', function (){
-    if (tool.isMobile()) {
+    if (!tool.isMobile()) {
       loadPage();
     }
   });
